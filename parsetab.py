@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftoperador_sumaoperador_restaleftoperador_multiplicacionoperador_restocoma comentario_multilinea comentario_unilinea corchete_abre corchete_cierra dato_boolean_false dato_boolean_true dato_char dato_double dato_string dos_puntos id llave_abre llave_cierra numero operador_AND operador_NOT operador_OR operador_diferenciacion operador_divicion operador_igual operador_igualacion operador_mayor operador_mayor_igual operador_menor operador_menor_igual operador_multiplicacion operador_resta operador_resto operador_suma parentesis_abre parentesis_cierra punto punto_coma reservada_break reservada_continue reservada_do reservada_else reservada_fin reservada_if reservada_inicio reservada_return reservada_void reservada_while tipo_boolean tipo_char tipo_double tipo_int tipo_string\n  INITIAL : reservada_inicio EXPRESSIONS reservada_fin\n\n  \n  EXPRESSIONS : EXPRESSIONS E\n              | E\n  \n  E : E operador_suma E\n    | E operador_resta E\n    | E operador_multiplicacion E\n    | E operador_divicion E\n    | E operador_resto E\n    | id\n    | numero\n  '
+_lr_signature = 'leftoperador_ORleftoperador_ANDleftoperador_igualacionoperador_diferenciacionleftoperador_menoroperador_menor_igualoperador_mayoroperador_mayor_igualleftoperador_sumaoperador_restaleftoperador_multiplicacionoperador_restorightoperador_NOTcoma comentario_multilinea comentario_unilinea corchete_abre corchete_cierra dato_boolean_false dato_boolean_true dato_char dato_double dato_string dos_puntos id llave_abre llave_cierra numero operador_AND operador_NOT operador_OR operador_diferenciacion operador_divicion operador_igual operador_igualacion operador_mayor operador_mayor_igual operador_menor operador_menor_igual operador_multiplicacion operador_resta operador_resto operador_suma parentesis_abre parentesis_cierra punto punto_coma reservada_break reservada_continue reservada_do reservada_else reservada_fin reservada_if reservada_inicio reservada_return reservada_void reservada_while tipo_boolean tipo_char tipo_double tipo_int tipo_string\n      S0 : INITIAL\n    \n    INITIAL : INITIAL ESTRUCTURA\n    \n    INITIAL : ESTRUCTURA\n    \n    ESTRUCTURA : PRODIF_ELSE\n               | PRODIF\n               | PRODDO_WHILE\n               | PRODWHILE\n                 \n    \n    PRODDO_WHILE : reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma\n    \n    PRODWHILE : reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO \n    \n    PRODIF_ELSE : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO\n    \n    PRODIF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO\n    \n    OPERACION : OPERACION operador_suma OPERACION\n            |   OPERACION operador_resta OPERACION\n            |   OPERACION operador_multiplicacion OPERACION\n            |   OPERACION operador_divicion OPERACION\n            |   OPERACION operador_resto OPERACION\n            |   OPERACION operador_igualacion OPERACION\n            |   OPERACION operador_diferenciacion OPERACION\n            |   OPERACION operador_mayor OPERACION\n            |   OPERACION operador_mayor_igual OPERACION\n            |   OPERACION operador_menor OPERACION\n            |   OPERACION operador_menor_igual OPERACION\n            |   OPERACION operador_AND OPERACION\n            |   OPERACION operador_OR OPERACION\n            |   OPERACION operador_NOT OPERACION\n            |   OPERACION operador_igual OPERACION\n            |   numero\n    \n    INSTRUCCIONES : DECLARACION\n                  | ASINGACION\n                  | PRODIF_ELSE\n                  | PRODIF\n                  | PRODDO_WHILE\n                  | PRODWHILE\n                  \n    \n    DECLARACION : TIPO_DATO id operador_igual DATO punto_coma\n    \n    ASINGACION : id operador_igual DATO punto_coma\n    \n  TIPO_DATO : tipo_int \n            | tipo_double\n            | tipo_string\n            | tipo_char\n            | tipo_boolean\n  \n  \n  DATO : numero \n          | dato_double\n          | dato_string\n          | dato_char\n          | dato_boolean_true\n          | dato_boolean_false\n  \n    OPERACION_FACTORIZADO : parentesis_abre OPERACION parentesis_cierra\n    \n    INSTRUCCIONES_FACTORIZADO : llave_abre INSTRUCCIONES llave_cierra\n    '
     
-_lr_action_items = {'reservada_inicio':([0,],[2,]),'$end':([1,7,],[0,-1,]),'id':([2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,],[5,5,-3,-9,-10,-2,5,5,5,5,5,-4,-5,-6,-7,-8,]),'numero':([2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,],[6,6,-3,-9,-10,-2,6,6,6,6,6,-4,-5,-6,-7,-8,]),'reservada_fin':([3,4,5,6,8,14,15,16,17,18,],[7,-3,-9,-10,-2,-4,-5,-6,-7,-8,]),'operador_suma':([4,5,6,8,14,15,16,17,18,],[9,-9,-10,9,-4,-5,-6,9,-8,]),'operador_resta':([4,5,6,8,14,15,16,17,18,],[10,-9,-10,10,-4,-5,-6,10,-8,]),'operador_multiplicacion':([4,5,6,8,14,15,16,17,18,],[11,-9,-10,11,11,11,-6,11,-8,]),'operador_divicion':([4,5,6,8,14,15,16,17,18,],[12,-9,-10,12,-4,-5,-6,12,-8,]),'operador_resto':([4,5,6,8,14,15,16,17,18,],[13,-9,-10,13,13,13,-6,13,-8,]),}
+_lr_action_items = {'reservada_if':([0,2,3,4,5,6,7,11,15,17,35,54,57,73,],[8,8,-3,-4,-5,-6,-7,-2,8,-11,-9,-48,-10,-8,]),'reservada_do':([0,2,3,4,5,6,7,11,15,17,35,54,57,73,],[9,9,-3,-4,-5,-6,-7,-2,9,-11,-9,-48,-10,-8,]),'reservada_while':([0,2,3,4,5,6,7,11,14,15,17,35,54,57,73,],[10,10,-3,-4,-5,-6,-7,-2,20,10,-11,-9,-48,-10,-8,]),'$end':([1,2,3,4,5,6,7,11,17,35,54,57,73,],[0,-1,-3,-4,-5,-6,-7,-2,-11,-9,-48,-10,-8,]),'parentesis_abre':([8,10,20,],[13,13,13,]),'llave_abre':([9,12,16,36,37,],[15,15,15,15,-47,]),'numero':([13,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,56,74,],[19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,76,76,]),'id':([15,28,30,31,32,33,34,],[29,55,-36,-37,-38,-39,-40,]),'tipo_int':([15,],[30,]),'tipo_double':([15,],[31,]),'tipo_string':([15,],[32,]),'tipo_char':([15,],[33,]),'tipo_boolean':([15,],[34,]),'reservada_else':([17,54,],[36,-48,]),'llave_cierra':([17,21,22,23,24,25,26,27,35,54,57,73,83,84,],[-11,54,-28,-29,-30,-31,-32,-33,-9,-48,-10,-8,-35,-34,]),'parentesis_cierra':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[37,-27,-12,-13,-14,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,]),'operador_suma':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[38,-27,-12,-13,-14,38,-16,38,38,38,38,38,38,38,38,-25,38,]),'operador_resta':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[39,-27,-12,-13,-14,39,-16,39,39,39,39,39,39,39,39,-25,39,]),'operador_multiplicacion':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[40,-27,40,40,-14,40,-16,40,40,40,40,40,40,40,40,-25,40,]),'operador_divicion':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[41,-27,-12,-13,-14,41,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,41,]),'operador_resto':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[42,-27,42,42,-14,42,-16,42,42,42,42,42,42,42,42,-25,42,]),'operador_igualacion':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[43,-27,-12,-13,-14,43,-16,-17,-18,-19,-20,-21,-22,43,43,-25,43,]),'operador_diferenciacion':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[44,-27,-12,-13,-14,44,-16,-17,-18,-19,-20,-21,-22,44,44,-25,44,]),'operador_mayor':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[45,-27,-12,-13,-14,45,-16,45,45,-19,-20,-21,-22,45,45,-25,45,]),'operador_mayor_igual':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[46,-27,-12,-13,-14,46,-16,46,46,-19,-20,-21,-22,46,46,-25,46,]),'operador_menor':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[47,-27,-12,-13,-14,47,-16,47,47,-19,-20,-21,-22,47,47,-25,47,]),'operador_menor_igual':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[48,-27,-12,-13,-14,48,-16,48,48,-19,-20,-21,-22,48,48,-25,48,]),'operador_AND':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[49,-27,-12,-13,-14,49,-16,-17,-18,-19,-20,-21,-22,-23,49,-25,49,]),'operador_OR':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[50,-27,-12,-13,-14,50,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,50,]),'operador_NOT':([18,19,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[51,-27,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,]),'operador_igual':([18,19,29,55,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,],[52,-27,56,74,-12,-13,-14,52,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,52,]),'punto_coma':([37,53,75,76,77,78,79,80,81,82,],[-47,73,83,-41,-42,-43,-44,-45,-46,84,]),'dato_double':([56,74,],[77,77,]),'dato_string':([56,74,],[78,78,]),'dato_char':([56,74,],[79,79,]),'dato_boolean_true':([56,74,],[80,80,]),'dato_boolean_false':([56,74,],[81,81,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'INITIAL':([0,],[1,]),'EXPRESSIONS':([2,],[3,]),'E':([2,3,9,10,11,12,13,],[4,8,14,15,16,17,18,]),}
+_lr_goto_items = {'S0':([0,],[1,]),'INITIAL':([0,],[2,]),'ESTRUCTURA':([0,2,],[3,11,]),'PRODIF_ELSE':([0,2,15,],[4,4,24,]),'PRODIF':([0,2,15,],[5,5,25,]),'PRODDO_WHILE':([0,2,15,],[6,6,26,]),'PRODWHILE':([0,2,15,],[7,7,27,]),'OPERACION_FACTORIZADO':([8,10,20,],[12,16,53,]),'INSTRUCCIONES_FACTORIZADO':([9,12,16,36,],[14,17,35,57,]),'OPERACION':([13,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,],[18,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,]),'INSTRUCCIONES':([15,],[21,]),'DECLARACION':([15,],[22,]),'ASINGACION':([15,],[23,]),'TIPO_DATO':([15,],[28,]),'DATO':([56,74,],[75,82,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,15 +26,53 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> INITIAL","S'",1,None,None,None),
-  ('INITIAL -> reservada_inicio EXPRESSIONS reservada_fin','INITIAL',3,'p_INITIAL','lexico.py',198),
-  ('EXPRESSIONS -> EXPRESSIONS E','EXPRESSIONS',2,'p_EXPRESSIONS','lexico.py',208),
-  ('EXPRESSIONS -> E','EXPRESSIONS',1,'p_EXPRESSIONS','lexico.py',209),
-  ('E -> E operador_suma E','E',3,'p_E','lexico.py',222),
-  ('E -> E operador_resta E','E',3,'p_E','lexico.py',223),
-  ('E -> E operador_multiplicacion E','E',3,'p_E','lexico.py',224),
-  ('E -> E operador_divicion E','E',3,'p_E','lexico.py',225),
-  ('E -> E operador_resto E','E',3,'p_E','lexico.py',226),
-  ('E -> id','E',1,'p_E','lexico.py',227),
-  ('E -> numero','E',1,'p_E','lexico.py',228),
+  ("S' -> S0","S'",1,None,None,None),
+  ('S0 -> INITIAL','S0',1,'p_S0','lexico.py',238),
+  ('INITIAL -> INITIAL ESTRUCTURA','INITIAL',2,'p_INITIAL_RECURSIVO','lexico.py',243),
+  ('INITIAL -> ESTRUCTURA','INITIAL',1,'p_INITIAL_INICIAL','lexico.py',249),
+  ('ESTRUCTURA -> PRODIF_ELSE','ESTRUCTURA',1,'p_ESTRUCTURA','lexico.py',255),
+  ('ESTRUCTURA -> PRODIF','ESTRUCTURA',1,'p_ESTRUCTURA','lexico.py',256),
+  ('ESTRUCTURA -> PRODDO_WHILE','ESTRUCTURA',1,'p_ESTRUCTURA','lexico.py',257),
+  ('ESTRUCTURA -> PRODWHILE','ESTRUCTURA',1,'p_ESTRUCTURA','lexico.py',258),
+  ('PRODDO_WHILE -> reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma','PRODDO_WHILE',5,'p_ESTRUCTURA_PRODDO_WHILE','lexico.py',265),
+  ('PRODWHILE -> reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO','PRODWHILE',3,'p_ESTRUCTURA_PRODWHILE','lexico.py',271),
+  ('PRODIF_ELSE -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO','PRODIF_ELSE',5,'p_ESTRUCTURA_IF_ELSE','lexico.py',277),
+  ('PRODIF -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO','PRODIF',3,'p_ESTRUCTURA_IF','lexico.py',283),
+  ('OPERACION -> OPERACION operador_suma OPERACION','OPERACION',3,'p_OPERACION','lexico.py',289),
+  ('OPERACION -> OPERACION operador_resta OPERACION','OPERACION',3,'p_OPERACION','lexico.py',290),
+  ('OPERACION -> OPERACION operador_multiplicacion OPERACION','OPERACION',3,'p_OPERACION','lexico.py',291),
+  ('OPERACION -> OPERACION operador_divicion OPERACION','OPERACION',3,'p_OPERACION','lexico.py',292),
+  ('OPERACION -> OPERACION operador_resto OPERACION','OPERACION',3,'p_OPERACION','lexico.py',293),
+  ('OPERACION -> OPERACION operador_igualacion OPERACION','OPERACION',3,'p_OPERACION','lexico.py',294),
+  ('OPERACION -> OPERACION operador_diferenciacion OPERACION','OPERACION',3,'p_OPERACION','lexico.py',295),
+  ('OPERACION -> OPERACION operador_mayor OPERACION','OPERACION',3,'p_OPERACION','lexico.py',296),
+  ('OPERACION -> OPERACION operador_mayor_igual OPERACION','OPERACION',3,'p_OPERACION','lexico.py',297),
+  ('OPERACION -> OPERACION operador_menor OPERACION','OPERACION',3,'p_OPERACION','lexico.py',298),
+  ('OPERACION -> OPERACION operador_menor_igual OPERACION','OPERACION',3,'p_OPERACION','lexico.py',299),
+  ('OPERACION -> OPERACION operador_AND OPERACION','OPERACION',3,'p_OPERACION','lexico.py',300),
+  ('OPERACION -> OPERACION operador_OR OPERACION','OPERACION',3,'p_OPERACION','lexico.py',301),
+  ('OPERACION -> OPERACION operador_NOT OPERACION','OPERACION',3,'p_OPERACION','lexico.py',302),
+  ('OPERACION -> OPERACION operador_igual OPERACION','OPERACION',3,'p_OPERACION','lexico.py',303),
+  ('OPERACION -> numero','OPERACION',1,'p_OPERACION','lexico.py',304),
+  ('INSTRUCCIONES -> DECLARACION','INSTRUCCIONES',1,'p_INSTRUCCIONES','lexico.py',308),
+  ('INSTRUCCIONES -> ASINGACION','INSTRUCCIONES',1,'p_INSTRUCCIONES','lexico.py',309),
+  ('INSTRUCCIONES -> PRODIF_ELSE','INSTRUCCIONES',1,'p_INSTRUCCIONES','lexico.py',310),
+  ('INSTRUCCIONES -> PRODIF','INSTRUCCIONES',1,'p_INSTRUCCIONES','lexico.py',311),
+  ('INSTRUCCIONES -> PRODDO_WHILE','INSTRUCCIONES',1,'p_INSTRUCCIONES','lexico.py',312),
+  ('INSTRUCCIONES -> PRODWHILE','INSTRUCCIONES',1,'p_INSTRUCCIONES','lexico.py',313),
+  ('DECLARACION -> TIPO_DATO id operador_igual DATO punto_coma','DECLARACION',5,'p_DECLARACIONES','lexico.py',320),
+  ('ASINGACION -> id operador_igual DATO punto_coma','ASINGACION',4,'p_ASIGNACION','lexico.py',325),
+  ('TIPO_DATO -> tipo_int','TIPO_DATO',1,'p_TIPO_DATO','lexico.py',330),
+  ('TIPO_DATO -> tipo_double','TIPO_DATO',1,'p_TIPO_DATO','lexico.py',331),
+  ('TIPO_DATO -> tipo_string','TIPO_DATO',1,'p_TIPO_DATO','lexico.py',332),
+  ('TIPO_DATO -> tipo_char','TIPO_DATO',1,'p_TIPO_DATO','lexico.py',333),
+  ('TIPO_DATO -> tipo_boolean','TIPO_DATO',1,'p_TIPO_DATO','lexico.py',334),
+  ('DATO -> numero','DATO',1,'p_DATO','lexico.py',341),
+  ('DATO -> dato_double','DATO',1,'p_DATO','lexico.py',342),
+  ('DATO -> dato_string','DATO',1,'p_DATO','lexico.py',343),
+  ('DATO -> dato_char','DATO',1,'p_DATO','lexico.py',344),
+  ('DATO -> dato_boolean_true','DATO',1,'p_DATO','lexico.py',345),
+  ('DATO -> dato_boolean_false','DATO',1,'p_DATO','lexico.py',346),
+  ('OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra','OPERACION_FACTORIZADO',3,'p_FACTORIZACION_OPERACION','lexico.py',352),
+  ('INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra','INSTRUCCIONES_FACTORIZADO',3,'p_FACTORIZACION_INSTRUCCIONES','lexico.py',358),
 ]

@@ -1,83 +1,81 @@
+from ply.yacc import yacc
+import json
+from ply.lex import lex
+
+
 def getColumn(t):
-  line_start = INPUT.rfind('\n', 0, t.lexpos) + 1
-  return (t.lexpos-line_start)+1
+    line_start = INPUT.rfind('\n', 0, t.lexpos) + 1
+    return (t.lexpos-line_start)+1
+
 
 # Tokens
 #!Separacion de tipo de tokens(Mas orden)
 #! AQUI SE DEFINE EL NOMBRE DEL TOKEN ##################################################
 reserved = {
-  'INICIO': 'reservada_inicio',
-  'FIN': 'reservada_fin',
-  'IF': 'reservada_if',
-  'ELSE': 'reservada_else',
-  'WHILE': 'reservada_while',
-  'DO': 'reservada_do',
-  'BREAK': 'reservada_break',
-  'CONTINUE': 'reservada_continue', 
-  'VOID': 'reservada_void',
-  'RETUNR': 'reservada_return',
+    'INICIO': 'reservada_inicio',
+    'FIN': 'reservada_fin',
+    'IF': 'reservada_if',
+    'ELSE': 'reservada_else',
+    'WHILE': 'reservada_while',
+    'DO': 'reservada_do',
+    'BREAK': 'reservada_break',
+    'CONTINUE': 'reservada_continue',
+    'VOID': 'reservada_void',
+    'RETUNR': 'reservada_return',
 }
-
-
 dato_boolean = {
-  'TRUE': 'dato_boolean_true',
-  'FALSE': 'dato_boolean_false',
+    'TRUE': 'dato_boolean_true',
+    'FALSE': 'dato_boolean_false',
 }
-
 signos_agrupacion = {
-  '(': 'parentesis_abre',
-  ')': 'parentesis_cierra',
-  '{': 'llave_abre',
-  '}': 'llave_cierra',
-  '[': 'corchete_abre',
-  ']': 'corchete_cierra',
+    '(': 'parentesis_abre',
+    ')': 'parentesis_cierra',
+    '{': 'llave_abre',
+    '}': 'llave_cierra',
+    '[': 'corchete_abre',
+    ']': 'corchete_cierra',
 }
-
 signos_puntuacion = {
-  ';': 'punto_coma',
-  ',': 'coma',
-  ':': 'dos_puntos',
-  '.': 'punto',
+    ';': 'punto_coma',
+    ',': 'coma',
+    ':': 'dos_puntos',
+    '.': 'punto',
 }
-
 tipo_de_datos = {
-  'INT': 'tipo_int',
-  'DOUBLE': 'tipo_double',
-  'STRING': 'tipo_string',
-  'CHAR': 'tipo_char',
-  'BOOLEAN': 'tipo_boolean',
+    'INT': 'tipo_int',
+    'DOUBLE': 'tipo_double',
+    'STRING': 'tipo_string',
+    'CHAR': 'tipo_char',
+    'BOOLEAN': 'tipo_boolean',
 }
-
-
 divicion = {
-  '/': 'operador_divicion',
+    '/': 'operador_divicion',
 }
 operadores = {
-  '+': 'operador_suma',
-  '-': 'operador_resta',
-  '*': 'operador_multiplicacion',
-  '%': 'operador_resto',
-  '==': 'operador_igualacion',
-  '!=': 'operador_diferenciacion',
-  '>': 'operador_mayor',
-  '>=': 'operador_mayor_igual',
-  '<': 'operador_menor',
-  '<=': 'operador_menor_igual',
-  '&&': 'operador_AND',
-  '||': 'operador_OR',
-  '!': 'operador_NOT',
-  '=': 'operador_igual',
+    '+': 'operador_suma',
+    '-': 'operador_resta',
+    '*': 'operador_multiplicacion',
+    '%': 'operador_resto',
+    '==': 'operador_igualacion',
+    '!=': 'operador_diferenciacion',
+    '>': 'operador_mayor',
+    '>=': 'operador_mayor_igual',
+    '<': 'operador_menor',
+    '<=': 'operador_menor_igual',
+    '&&': 'operador_AND',
+    '||': 'operador_OR',
+    '!': 'operador_NOT',
+    '=': 'operador_igual',
 }
-
 tokens = (
-  'comentario_unilinea',
-  'comentario_multilinea',
-  'dato_char',
-  'dato_double',
-  'dato_string',
-  'numero',
-  'id',
-)  + tuple(tipo_de_datos.values()) + tuple(reserved.values()) + tuple(operadores.values()) + tuple(dato_boolean.values()) +tuple(signos_agrupacion.values())+tuple(signos_puntuacion.values())+tuple(divicion.values())
+    'comentario_unilinea',
+    'comentario_multilinea',
+    'dato_char',
+    'dato_double',
+    'dato_string',
+    'numero',
+    'id',
+) + tuple(tipo_de_datos.values()) + tuple(reserved.values()) + tuple(operadores.values()) + tuple(dato_boolean.values()) + tuple(signos_agrupacion.values())+tuple(signos_puntuacion.values())+tuple(divicion.values())
 
 
 #! AQUI SE DEFINE EL TOKEN ##################################################
@@ -99,7 +97,6 @@ t_operador_mayor = r'>'
 t_operador_menor = r'<'
 t_operador_OR = r'\|\|'
 
-
 t_dato_boolean_true = r'TRUE'
 t_dato_boolean_false = r'FALSE'
 t_numero = r'\d+'
@@ -115,14 +112,11 @@ t_coma = r','
 t_dos_puntos = r':'
 t_punto = r'\.'
 
-
-
 t_tipo_int = r'INT'
 t_tipo_double = r'DOUBLE'
 t_tipo_string = r'STRING'
 t_tipo_char = r'CHAR'
 t_tipo_boolean = r'BOOLEAN'
-
 
 t_operador_divicion = r'\/'
 
@@ -135,44 +129,66 @@ t:
 - type: nombre del token
 """
 #! t_id BUSCA EN TOKEN tk_id NOMBRE DE FUNCION ##################################################
-def t_id(t):                   #! <No debe de haber nada mas que esto
-    r'[a-zA-Z_][a-zA-Z_0-9]*'  #! <No debe de haber nada mas que esto
-    #! Si algo que no deberia ser idendentificador lo corrije 
-    if t.value.upper() in reserved.keys(): 
+
+
+def t_id(t):  # ! <No debe de haber nada mas que esto
+    r'[a-zA-Z_][a-zA-Z_0-9]*'  # ! <No debe de haber nada mas que esto
+    #! Si algo que no deberia ser idendentificador lo corrije
+    if t.value.upper() in reserved.keys():
         t.type = reserved[t.value.upper()]
-    if t.value.upper() in tipo_de_datos.keys(): 
+    if t.value.upper() in tipo_de_datos.keys():
         t.type = tipo_de_datos[t.value.upper()]
-    if t.value.upper() in dato_boolean.keys(): 
+    if t.value.upper() in dato_boolean.keys():
         t.type = dato_boolean[t.value.upper()]
 
     return t
 
-def t_dato_double(t):                  
-    r'\d+\.\d+' 
-    return t
-def t_dato_string(t):                  
-    r'"[^"]*"' 
-    return t
-def t_dato_char(t):                  
-    r'\'[^\']{1}\'' 
-    return t
-def t_comentario_unilinea(t):                  
-    r'//[^\n]*\n' 
-    return t
-def t_comentario_multilinea(t):                  
-    r'/\*[^*/]*\*/' 
+
+def t_dato_double(t):
+    r'\d+\.\d+'
     return t
 
+
+def t_dato_string(t):
+    r'"[^"]*"'
+    return t
+
+
+def t_dato_char(t):
+    r'\'[^\']{1}\''
+    return t
+
+
+def t_comentario_unilinea(t):
+    r'//[^\n]*\n'
+    return t
+
+
+def t_comentario_multilinea(t):
+    r'/\*[^*/]*\*/'
+    return t
+
+
 def t_newline(t):
-  r'\n+'
-  t.lexer.lineno+=len(t.value)
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+
 def t_error(t):
-  print(t.lineno, getColumn(t), f"No se pudo reconocer el lexema '{t.value}'")
-  t.lexer.skip(1)
-  #!Presedemcia(mas arriba importan menos )
+    print(t.lineno, getColumn(t),
+          f"No se pudo reconocer el lexema '{t.value}'")
+    t.lexer.skip(1)
+
+
+    #!Presedemcia(mas arriba importan menos )
 precedence = (
-  ('left','operador_suma','operador_resta'),
-  ('left','operador_multiplicacion','operador_resto')
+    ('left', 'operador_OR'),
+    ('left', 'operador_AND'),
+    ('left', 'operador_igualacion', 'operador_diferenciacion'),
+    ('left', 'operador_menor', 'operador_menor_igual','operador_mayor', 'operador_mayor_igual'),
+    ('left', 'operador_suma', 'operador_resta'),
+    ('left', 'operador_multiplicacion', 'operador_resto'),
+    ('right', 'operador_NOT')
 )
 """
 ASOCIATIVIDAD IZQUIERDA (left)
@@ -193,74 +209,231 @@ Para retornar algo de una producción se debe asignar a p[0]
 """
 # Producciones
 #! Aqui se definen producciones
-def p_INITIAL(p):
+"""def p_sintactico(p):
   '''
-  INITIAL : reservada_inicio EXPRESSIONS reservada_fin
+  SINTACTICO : IF
 
+               
   '''
+  p[0] = p[1]
 
-  p[0] = p[2]
-    #! Siempre asignarle algo al P[0]
+def p_IF(p):
+  '''
+  IF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
+  '''
+  p[0] = p[1]
 
-#! Complicado 28:20
-def p_EXPRESSIONS(p):
-   
+def p_OPERACION(p):
   '''
-  EXPRESSIONS : EXPRESSIONS E
-              | E
+  IF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
   '''
-    
-  if len(p)==3:
-    
-    p[0] = p[1]
-    p[0].append(p[2])
-  else:
-    
+  p[0] = p[1]
+
+
+"""
+
+
+def p_S0(p):
+    '''
+      S0 : INITIAL
+    '''
+    print(p[1], "arroba")
+def p_INITIAL_RECURSIVO(p):
+    '''
+    INITIAL : INITIAL ESTRUCTURA
+    '''
+    p[1].append(p[2]) #! nose xd
+    p[0] = p[1] 
+def p_INITIAL_INICIAL(p):
+    '''
+    INITIAL : ESTRUCTURA
+    '''
     p[0] = [p[1]]
+
+def p_ESTRUCTURA(p):
+    '''
+    ESTRUCTURA : PRODIF_ELSE
+               | PRODIF
+               | PRODDO_WHILE
+               | PRODWHILE
+                 
+    '''
+    p[0] = p[1]
+
+def p_ESTRUCTURA_PRODDO_WHILE(p):
+    '''
+    PRODDO_WHILE : reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma
+    '''
+    p[0] = p[0]
+
+def p_ESTRUCTURA_PRODWHILE(p):
+    '''
+    PRODWHILE : reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO 
+    '''
+    p[0] = p[0]
+
+def p_ESTRUCTURA_IF_ELSE(p):
+    '''
+    PRODIF_ELSE : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO
+    '''
+    p[0] = p[1]
+
+def p_ESTRUCTURA_IF(p):
+    '''
+    PRODIF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
+    '''
+    p[0] = p[1]
+
+def p_OPERACION(p):
+    '''
+    OPERACION : OPERACION operador_suma OPERACION
+            |   OPERACION operador_resta OPERACION
+            |   OPERACION operador_multiplicacion OPERACION
+            |   OPERACION operador_divicion OPERACION
+            |   OPERACION operador_resto OPERACION
+            |   OPERACION operador_igualacion OPERACION
+            |   OPERACION operador_diferenciacion OPERACION
+            |   OPERACION operador_mayor OPERACION
+            |   OPERACION operador_mayor_igual OPERACION
+            |   OPERACION operador_menor OPERACION
+            |   OPERACION operador_menor_igual OPERACION
+            |   OPERACION operador_AND OPERACION
+            |   OPERACION operador_OR OPERACION
+            |   OPERACION operador_NOT OPERACION
+            |   OPERACION operador_igual OPERACION
+            |   numero
+    '''
+def p_INSTRUCCIONES(p):
+    '''
+    INSTRUCCIONES : DECLARACION
+                  | ASINGACION
+                  | PRODIF_ELSE
+                  | PRODIF
+                  | PRODDO_WHILE
+                  | PRODWHILE
+                  
+    '''
+    p[0] = p[1]
+#! AGREGAR TODO (FALTA)
+def p_DECLARACIONES(p):
+    '''
+    DECLARACION : TIPO_DATO id operador_igual DATO punto_coma
+    '''
+    p[0] = p[1]
+def p_ASIGNACION(p):
+    '''
+    ASINGACION : id operador_igual DATO punto_coma
+    '''
+    p[0] = p[1]
+def p_TIPO_DATO(p):
+  '''
+  TIPO_DATO : tipo_int 
+            | tipo_double
+            | tipo_string
+            | tipo_char
+            | tipo_boolean
+  
+  '''
+  
+  p[0] = p[1]
+def p_DATO(p):
+  '''
+  DATO : numero 
+          | dato_double
+          | dato_string
+          | dato_char
+          | dato_boolean_true
+          | dato_boolean_false
+  '''
+
+  p[0] = p[1] 
+def p_FACTORIZACION_OPERACION(p):
+    '''
+    OPERACION_FACTORIZADO : parentesis_abre OPERACION parentesis_cierra
+    '''
+    p[0] = p[1]
+
+def p_FACTORIZACION_INSTRUCCIONES(p):
+    '''
+    INSTRUCCIONES_FACTORIZADO : llave_abre INSTRUCCIONES llave_cierra
+    '''
+    p[0] = p[1]
+
+
+
+
+
+
+
+
+#!  28:20
+"""
+def p_EXPRESSIONS(p):
+    '''
+    EXPRESSIONS : EXPRESSIONS E
+    '''
+    p[0] = p[2]
+
+
+def p_EXPRESSIONS_VALOR(p):
+    '''
+    EXPRESSIONS : E
+    '''
+    p[0] = p[1]
+
+
 def p_E(p):
-  '''
-  E : E operador_suma E
-    | E operador_resta E
-    | E operador_multiplicacion E
-    | E operador_divicion E
-    | E operador_resto E
-    | id
-    | numero
-  '''
-  if len(p)==2:
-    p[0] = {"linea": p.lexer.lineno, "columna": getColumn(p.lexer), "valor": p[1]}
-  else:
-    p[0] = {"linea": p.lexer.lineno, "columna": getColumn(p.lexer), "operacion": p[2], "izquierda": p[1], "derecha": p[3]}
+    '''
+    E : E operador_suma E
+      | E operador_resta E
+      | E operador_multiplicacion E
+      | E operador_divicion E
+      | E operador_resto E
+      | id
+      | numero
+    '''
+
+    if len(p) == 2:
+        p[0] = {"linea": p.lexer.lineno,
+                "columna": getColumn(p.lexer), "valor": p[1]}
+    else:
+        p[0] = {"linea": p.lexer.lineno, "columna": getColumn(
+            p.lexer), "operacion": p[2], "izquierda": p[1], "derecha": p[3]}
+
+    p[0] = "@"
+
+
+
+
+
+
+
+"""
+
+
 def p_error(p):
-  if p:
-    print(f"Sintaxis no válida cerca de '{p.value}' ({p.type})")
-  else:
-    print("Ninguna instrucción válida")
-from ply.yacc import yacc
-from ply.lex import lex
+    if p:
+        print(f"Sintaxis no válida cerca de '{p.value}' ({p.type})")
+    else:
+        print("Ninguna instrucción válida")
+
 
 lexer = lex()
 parser = yacc()
-#lexer.lex(reflags=re.IGNORECASE)  # case insensitive
+# lexer.lex(reflags=re.IGNORECASE)  # case insensitive
 
 INPUT = r'''
-INICIO
-9/2
-FIN
+if (5*5) {int a = 55 ;} else {int a = 55 ;}
+while (5*5) {int a = 55 ;}
+do {int a = 55 ;} while (5*5) ;
 
-
-    '''
+'''
 
 ast = parser.parse(INPUT, lexer)
 
-import json
 print(json.dumps(ast, indent=10, sort_keys=False))
 
 """#! impresion de tokens
 lexer.input(INPUT)
 for tok in lexer:
     print(tok)"""
-    
-
-
-
