@@ -256,6 +256,8 @@ def p_ESTRUCTURA(p):
                | PRODIF
                | PRODDO_WHILE
                | PRODWHILE
+               | PRODVOID
+               | PRODFUNCION
                  
     '''
     p[0] = p[1]
@@ -284,6 +286,19 @@ def p_ESTRUCTURA_IF(p):
     '''
     p[0] = p[1]
 
+def p_ESTRUCTURA_VOID(p):
+    '''
+    PRODVOID : reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
+    '''
+    p[0] = p[1]
+
+def p_ESTRUCTURA_FUNCION(p):
+    '''
+    PRODFUNCION : TIPO_DATO id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
+    '''
+    p[0] = p[1]
+
+
 def p_OPERACION(p):
     '''
     OPERACION : OPERACION operador_suma OPERACION
@@ -311,6 +326,11 @@ def p_INSTRUCCIONES(p):
                   | PRODIF
                   | PRODDO_WHILE
                   | PRODWHILE
+                  | PRODVOID
+                  | RETURN
+                  | BREAK
+                  | CONTINUE
+                  | LLAMADA
                   
     '''
     p[0] = p[1]
@@ -346,16 +366,68 @@ def p_DATO(p):
           | dato_boolean_false
   '''
 
-  p[0] = p[1] 
+  p[0] = p[1]
+def p_PARAMETRO_DEFINICION(p):
+    '''
+    PARAMETRO : TIPO_DATO id
+    '''
+    p[0] = p[1]
+def p_PARAMETROS_RECURSIVO(p):
+    '''
+    PARAMETROS :  PARAMETROS coma PARAMETRO 
+               | PARAMETRO
+               | 
+    '''
+    p[0] = p[1]
+def p_LLAMADA(p):
+    '''
+    LLAMADA : id parentesis_abre ARGUMENTOS parentesis_cierra
+    '''
+    p[0] = p[1]
+def p_ARGUMENTOS(p):
+    '''
+    ARGUMENTOS :  ARGUMENTOS coma ARGUMENTO 
+               | ARGUMENTO
+               | 
+    '''
+    p[0] = p[1]
+def p_ARGUMENTO(p):
+    ''' 
+    ARGUMENTO :  DATO
+    '''
+    p[0] = p[1]
+
+def p_RETURN(p):
+    '''
+    RETURN : reservada_return punto_coma 
+           | reservada_return DATO punto_coma 
+    '''
+    p[0] = p[1]
+def p_BREAK(p):
+    '''
+    BREAK : reservada_break punto_coma 
+    '''
+    p[0] = p[1]
+def p_CONTINUE(p):
+    '''
+    RETURN : reservada_continue punto_coma 
+    '''
+    p[0] = p[1]
+
+
 def p_FACTORIZACION_OPERACION(p):
     '''
     OPERACION_FACTORIZADO : parentesis_abre OPERACION parentesis_cierra
     '''
     p[0] = p[1]
-
 def p_FACTORIZACION_INSTRUCCIONES(p):
     '''
     INSTRUCCIONES_FACTORIZADO : llave_abre INSTRUCCIONES llave_cierra
+    '''
+    p[0] = p[1]
+def p_FACTORIZACION_PARAMETROS(p):
+    '''
+    PARAMETROS_FACTORIZADO : parentesis_abre PARAMETROS parentesis_cierra
     '''
     p[0] = p[1]
 
@@ -426,7 +498,8 @@ INPUT = r'''
 if (5*5) {int a = 55 ;} else {int a = 55 ;}
 while (5*5) {int a = 55 ;}
 do {int a = 55 ;} while (5*5) ;
-
+void a (int a) {int a = 55;}
+void a (string b) {int a = 55;}
 '''
 
 ast = parser.parse(INPUT, lexer)
