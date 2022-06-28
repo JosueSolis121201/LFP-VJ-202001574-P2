@@ -8,11 +8,8 @@ Unused terminals:
     corchete_cierra
     dos_puntos
     punto
-    reservada_break
-    reservada_continue
     reservada_fin
     reservada_inicio
-    reservada_return
 
 Grammar
 
@@ -55,51 +52,64 @@ Rule 35    INSTRUCCIONES -> PRODIF
 Rule 36    INSTRUCCIONES -> PRODDO_WHILE
 Rule 37    INSTRUCCIONES -> PRODWHILE
 Rule 38    INSTRUCCIONES -> PRODVOID
-Rule 39    DECLARACION -> TIPO_DATO id operador_igual DATO punto_coma
-Rule 40    ASINGACION -> id operador_igual DATO punto_coma
-Rule 41    TIPO_DATO -> tipo_int
-Rule 42    TIPO_DATO -> tipo_double
-Rule 43    TIPO_DATO -> tipo_string
-Rule 44    TIPO_DATO -> tipo_char
-Rule 45    TIPO_DATO -> tipo_boolean
-Rule 46    DATO -> numero
-Rule 47    DATO -> dato_double
-Rule 48    DATO -> dato_string
-Rule 49    DATO -> dato_char
-Rule 50    DATO -> dato_boolean_true
-Rule 51    DATO -> dato_boolean_false
-Rule 52    PARAMETRO -> TIPO_DATO id
-Rule 53    PARAMETROS -> PARAMETROS coma PARAMETRO
-Rule 54    PARAMETROS -> PARAMETRO
-Rule 55    PARAMETROS -> <empty>
-Rule 56    OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra
-Rule 57    INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra
-Rule 58    PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS parentesis_cierra
+Rule 39    INSTRUCCIONES -> RETURN
+Rule 40    INSTRUCCIONES -> BREAK
+Rule 41    INSTRUCCIONES -> CONTINUE
+Rule 42    INSTRUCCIONES -> LLAMADA
+Rule 43    DECLARACION -> TIPO_DATO id operador_igual DATO punto_coma
+Rule 44    ASINGACION -> id operador_igual DATO punto_coma
+Rule 45    TIPO_DATO -> tipo_int
+Rule 46    TIPO_DATO -> tipo_double
+Rule 47    TIPO_DATO -> tipo_string
+Rule 48    TIPO_DATO -> tipo_char
+Rule 49    TIPO_DATO -> tipo_boolean
+Rule 50    DATO -> numero
+Rule 51    DATO -> dato_double
+Rule 52    DATO -> dato_string
+Rule 53    DATO -> dato_char
+Rule 54    DATO -> dato_boolean_true
+Rule 55    DATO -> dato_boolean_false
+Rule 56    PARAMETRO -> TIPO_DATO id
+Rule 57    PARAMETROS -> PARAMETROS coma PARAMETRO
+Rule 58    PARAMETROS -> PARAMETRO
+Rule 59    PARAMETROS -> <empty>
+Rule 60    LLAMADA -> id parentesis_abre ARGUMENTOS parentesis_cierra
+Rule 61    ARGUMENTOS -> ARGUMENTOS coma ARGUMENTO
+Rule 62    ARGUMENTOS -> ARGUMENTO
+Rule 63    ARGUMENTOS -> <empty>
+Rule 64    ARGUMENTO -> DATO
+Rule 65    RETURN -> reservada_return punto_coma
+Rule 66    RETURN -> reservada_return DATO punto_coma
+Rule 67    BREAK -> reservada_break punto_coma
+Rule 68    CONTINUE -> reservada_continue punto_coma
+Rule 69    OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra
+Rule 70    INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra
+Rule 71    PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS parentesis_cierra
 
 Terminals, with rules where they appear
 
-coma                 : 53
+coma                 : 57 61
 comentario_multilinea : 
 comentario_unilinea  : 
 corchete_abre        : 
 corchete_cierra      : 
-dato_boolean_false   : 51
-dato_boolean_true    : 50
-dato_char            : 49
-dato_double          : 47
-dato_string          : 48
+dato_boolean_false   : 55
+dato_boolean_true    : 54
+dato_char            : 53
+dato_double          : 51
+dato_string          : 52
 dos_puntos           : 
 error                : 
-id                   : 14 15 39 40 52
-llave_abre           : 57
-llave_cierra         : 57
-numero               : 31 46
+id                   : 14 15 43 44 56 60
+llave_abre           : 70
+llave_cierra         : 70
+numero               : 31 50
 operador_AND         : 27
 operador_NOT         : 29
 operador_OR          : 28
 operador_diferenciacion : 22
 operador_divicion    : 19
-operador_igual       : 30 39 40
+operador_igual       : 30 43 44
 operador_igualacion  : 21
 operador_mayor       : 23
 operador_mayor_igual : 24
@@ -109,39 +119,44 @@ operador_multiplicacion : 18
 operador_resta       : 17
 operador_resto       : 20
 operador_suma        : 16
-parentesis_abre      : 56 58
-parentesis_cierra    : 56 58
+parentesis_abre      : 60 69 71
+parentesis_cierra    : 60 69 71
 punto                : 
-punto_coma           : 10 39 40
-reservada_break      : 
-reservada_continue   : 
+punto_coma           : 10 43 44 65 66 67 68
+reservada_break      : 67
+reservada_continue   : 68
 reservada_do         : 10
 reservada_else       : 12
 reservada_fin        : 
 reservada_if         : 12 13
 reservada_inicio     : 
-reservada_return     : 
+reservada_return     : 65 66
 reservada_void       : 14
 reservada_while      : 10 11
-tipo_boolean         : 45
-tipo_char            : 44
-tipo_double          : 42
-tipo_int             : 41
-tipo_string          : 43
+tipo_boolean         : 49
+tipo_char            : 48
+tipo_double          : 46
+tipo_int             : 45
+tipo_string          : 47
 
 Nonterminals, with rules where they appear
 
+ARGUMENTO            : 61 62
+ARGUMENTOS           : 60 61
 ASINGACION           : 33
-DATO                 : 39 40
+BREAK                : 40
+CONTINUE             : 41
+DATO                 : 43 44 64 66
 DECLARACION          : 32
 ESTRUCTURA           : 2 3
 INITIAL              : 1 2
-INSTRUCCIONES        : 57
+INSTRUCCIONES        : 70
 INSTRUCCIONES_FACTORIZADO : 10 11 12 12 13 14 15
-OPERACION            : 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 56
+LLAMADA              : 42
+OPERACION            : 16 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 69
 OPERACION_FACTORIZADO : 10 11 12 13
-PARAMETRO            : 53 54
-PARAMETROS           : 53 58
+PARAMETRO            : 57 58
+PARAMETROS           : 57 71
 PARAMETROS_FACTORIZADO : 14 15
 PRODDO_WHILE         : 6 36
 PRODFUNCION          : 9
@@ -149,8 +164,9 @@ PRODIF               : 5 35
 PRODIF_ELSE          : 4 34
 PRODVOID             : 8 38
 PRODWHILE            : 7 37
+RETURN               : 39
 S0                   : 0
-TIPO_DATO            : 15 39 52
+TIPO_DATO            : 15 43 56
 
 Parsing method: LALR
 
@@ -172,11 +188,11 @@ state 0
     (11) PRODWHILE -> . reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     (14) PRODVOID -> . reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     (15) PRODFUNCION -> . TIPO_DATO id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-    (41) TIPO_DATO -> . tipo_int
-    (42) TIPO_DATO -> . tipo_double
-    (43) TIPO_DATO -> . tipo_string
-    (44) TIPO_DATO -> . tipo_char
-    (45) TIPO_DATO -> . tipo_boolean
+    (45) TIPO_DATO -> . tipo_int
+    (46) TIPO_DATO -> . tipo_double
+    (47) TIPO_DATO -> . tipo_string
+    (48) TIPO_DATO -> . tipo_char
+    (49) TIPO_DATO -> . tipo_boolean
 
     reservada_if    shift and go to state 10
     reservada_do    shift and go to state 11
@@ -221,11 +237,11 @@ state 2
     (11) PRODWHILE -> . reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     (14) PRODVOID -> . reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     (15) PRODFUNCION -> . TIPO_DATO id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-    (41) TIPO_DATO -> . tipo_int
-    (42) TIPO_DATO -> . tipo_double
-    (43) TIPO_DATO -> . tipo_string
-    (44) TIPO_DATO -> . tipo_char
-    (45) TIPO_DATO -> . tipo_boolean
+    (45) TIPO_DATO -> . tipo_int
+    (46) TIPO_DATO -> . tipo_double
+    (47) TIPO_DATO -> . tipo_string
+    (48) TIPO_DATO -> . tipo_char
+    (49) TIPO_DATO -> . tipo_boolean
 
     $end            reduce using rule 1 (S0 -> INITIAL .)
     reservada_if    shift and go to state 10
@@ -363,7 +379,7 @@ state 10
 
     (12) PRODIF_ELSE -> reservada_if . OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO
     (13) PRODIF -> reservada_if . OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-    (56) OPERACION_FACTORIZADO -> . parentesis_abre OPERACION parentesis_cierra
+    (69) OPERACION_FACTORIZADO -> . parentesis_abre OPERACION parentesis_cierra
 
     parentesis_abre shift and go to state 22
 
@@ -372,7 +388,7 @@ state 10
 state 11
 
     (10) PRODDO_WHILE -> reservada_do . INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma
-    (57) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
 
     llave_abre      shift and go to state 24
 
@@ -381,7 +397,7 @@ state 11
 state 12
 
     (11) PRODWHILE -> reservada_while . OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-    (56) OPERACION_FACTORIZADO -> . parentesis_abre OPERACION parentesis_cierra
+    (69) OPERACION_FACTORIZADO -> . parentesis_abre OPERACION parentesis_cierra
 
     parentesis_abre shift and go to state 22
 
@@ -403,37 +419,37 @@ state 14
 
 state 15
 
-    (41) TIPO_DATO -> tipo_int .
+    (45) TIPO_DATO -> tipo_int .
 
-    id              reduce using rule 41 (TIPO_DATO -> tipo_int .)
+    id              reduce using rule 45 (TIPO_DATO -> tipo_int .)
 
 
 state 16
 
-    (42) TIPO_DATO -> tipo_double .
+    (46) TIPO_DATO -> tipo_double .
 
-    id              reduce using rule 42 (TIPO_DATO -> tipo_double .)
+    id              reduce using rule 46 (TIPO_DATO -> tipo_double .)
 
 
 state 17
 
-    (43) TIPO_DATO -> tipo_string .
+    (47) TIPO_DATO -> tipo_string .
 
-    id              reduce using rule 43 (TIPO_DATO -> tipo_string .)
+    id              reduce using rule 47 (TIPO_DATO -> tipo_string .)
 
 
 state 18
 
-    (44) TIPO_DATO -> tipo_char .
+    (48) TIPO_DATO -> tipo_char .
 
-    id              reduce using rule 44 (TIPO_DATO -> tipo_char .)
+    id              reduce using rule 48 (TIPO_DATO -> tipo_char .)
 
 
 state 19
 
-    (45) TIPO_DATO -> tipo_boolean .
+    (49) TIPO_DATO -> tipo_boolean .
 
-    id              reduce using rule 45 (TIPO_DATO -> tipo_boolean .)
+    id              reduce using rule 49 (TIPO_DATO -> tipo_boolean .)
 
 
 state 20
@@ -456,7 +472,7 @@ state 21
 
     (12) PRODIF_ELSE -> reservada_if OPERACION_FACTORIZADO . INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO
     (13) PRODIF -> reservada_if OPERACION_FACTORIZADO . INSTRUCCIONES_FACTORIZADO
-    (57) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
 
     llave_abre      shift and go to state 24
 
@@ -464,7 +480,7 @@ state 21
 
 state 22
 
-    (56) OPERACION_FACTORIZADO -> parentesis_abre . OPERACION parentesis_cierra
+    (69) OPERACION_FACTORIZADO -> parentesis_abre . OPERACION parentesis_cierra
     (16) OPERACION -> . OPERACION operador_suma OPERACION
     (17) OPERACION -> . OPERACION operador_resta OPERACION
     (18) OPERACION -> . OPERACION operador_multiplicacion OPERACION
@@ -495,7 +511,7 @@ state 23
 
 state 24
 
-    (57) INSTRUCCIONES_FACTORIZADO -> llave_abre . INSTRUCCIONES llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> llave_abre . INSTRUCCIONES llave_cierra
     (32) INSTRUCCIONES -> . DECLARACION
     (33) INSTRUCCIONES -> . ASINGACION
     (34) INSTRUCCIONES -> . PRODIF_ELSE
@@ -503,24 +519,36 @@ state 24
     (36) INSTRUCCIONES -> . PRODDO_WHILE
     (37) INSTRUCCIONES -> . PRODWHILE
     (38) INSTRUCCIONES -> . PRODVOID
-    (39) DECLARACION -> . TIPO_DATO id operador_igual DATO punto_coma
-    (40) ASINGACION -> . id operador_igual DATO punto_coma
+    (39) INSTRUCCIONES -> . RETURN
+    (40) INSTRUCCIONES -> . BREAK
+    (41) INSTRUCCIONES -> . CONTINUE
+    (42) INSTRUCCIONES -> . LLAMADA
+    (43) DECLARACION -> . TIPO_DATO id operador_igual DATO punto_coma
+    (44) ASINGACION -> . id operador_igual DATO punto_coma
     (12) PRODIF_ELSE -> . reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO
     (13) PRODIF -> . reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     (10) PRODDO_WHILE -> . reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma
     (11) PRODWHILE -> . reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     (14) PRODVOID -> . reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-    (41) TIPO_DATO -> . tipo_int
-    (42) TIPO_DATO -> . tipo_double
-    (43) TIPO_DATO -> . tipo_string
-    (44) TIPO_DATO -> . tipo_char
-    (45) TIPO_DATO -> . tipo_boolean
+    (65) RETURN -> . reservada_return punto_coma
+    (66) RETURN -> . reservada_return DATO punto_coma
+    (67) BREAK -> . reservada_break punto_coma
+    (68) CONTINUE -> . reservada_continue punto_coma
+    (60) LLAMADA -> . id parentesis_abre ARGUMENTOS parentesis_cierra
+    (45) TIPO_DATO -> . tipo_int
+    (46) TIPO_DATO -> . tipo_double
+    (47) TIPO_DATO -> . tipo_string
+    (48) TIPO_DATO -> . tipo_char
+    (49) TIPO_DATO -> . tipo_boolean
 
-    id              shift and go to state 41
+    id              shift and go to state 45
     reservada_if    shift and go to state 10
     reservada_do    shift and go to state 11
     reservada_while shift and go to state 12
     reservada_void  shift and go to state 13
+    reservada_return shift and go to state 46
+    reservada_break shift and go to state 47
+    reservada_continue shift and go to state 48
     tipo_int        shift and go to state 15
     tipo_double     shift and go to state 16
     tipo_string     shift and go to state 17
@@ -535,41 +563,45 @@ state 24
     PRODDO_WHILE                   shift and go to state 37
     PRODWHILE                      shift and go to state 38
     PRODVOID                       shift and go to state 39
-    TIPO_DATO                      shift and go to state 40
+    RETURN                         shift and go to state 40
+    BREAK                          shift and go to state 41
+    CONTINUE                       shift and go to state 42
+    LLAMADA                        shift and go to state 43
+    TIPO_DATO                      shift and go to state 44
 
 state 25
 
     (11) PRODWHILE -> reservada_while OPERACION_FACTORIZADO . INSTRUCCIONES_FACTORIZADO
-    (57) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
 
     llave_abre      shift and go to state 24
 
-    INSTRUCCIONES_FACTORIZADO      shift and go to state 42
+    INSTRUCCIONES_FACTORIZADO      shift and go to state 49
 
 state 26
 
     (14) PRODVOID -> reservada_void id . PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-    (58) PARAMETROS_FACTORIZADO -> . parentesis_abre PARAMETROS parentesis_cierra
+    (71) PARAMETROS_FACTORIZADO -> . parentesis_abre PARAMETROS parentesis_cierra
 
-    parentesis_abre shift and go to state 44
+    parentesis_abre shift and go to state 51
 
-    PARAMETROS_FACTORIZADO         shift and go to state 43
+    PARAMETROS_FACTORIZADO         shift and go to state 50
 
 state 27
 
     (15) PRODFUNCION -> TIPO_DATO id . PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-    (58) PARAMETROS_FACTORIZADO -> . parentesis_abre PARAMETROS parentesis_cierra
+    (71) PARAMETROS_FACTORIZADO -> . parentesis_abre PARAMETROS parentesis_cierra
 
-    parentesis_abre shift and go to state 44
+    parentesis_abre shift and go to state 51
 
-    PARAMETROS_FACTORIZADO         shift and go to state 45
+    PARAMETROS_FACTORIZADO         shift and go to state 52
 
 state 28
 
     (12) PRODIF_ELSE -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO . reservada_else INSTRUCCIONES_FACTORIZADO
     (13) PRODIF -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO .
 
-    reservada_else  shift and go to state 46
+    reservada_else  shift and go to state 53
     reservada_if    reduce using rule 13 (PRODIF -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO .)
     reservada_do    reduce using rule 13 (PRODIF -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO .)
     reservada_while reduce using rule 13 (PRODIF -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO .)
@@ -585,7 +617,7 @@ state 28
 
 state 29
 
-    (56) OPERACION_FACTORIZADO -> parentesis_abre OPERACION . parentesis_cierra
+    (69) OPERACION_FACTORIZADO -> parentesis_abre OPERACION . parentesis_cierra
     (16) OPERACION -> OPERACION . operador_suma OPERACION
     (17) OPERACION -> OPERACION . operador_resta OPERACION
     (18) OPERACION -> OPERACION . operador_multiplicacion OPERACION
@@ -602,22 +634,22 @@ state 29
     (29) OPERACION -> OPERACION . operador_NOT OPERACION
     (30) OPERACION -> OPERACION . operador_igual OPERACION
 
-    parentesis_cierra shift and go to state 47
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_divicion shift and go to state 51
-    operador_resto  shift and go to state 52
-    operador_igualacion shift and go to state 53
-    operador_diferenciacion shift and go to state 54
-    operador_mayor  shift and go to state 55
-    operador_mayor_igual shift and go to state 56
-    operador_menor  shift and go to state 57
-    operador_menor_igual shift and go to state 58
-    operador_AND    shift and go to state 59
-    operador_OR     shift and go to state 60
-    operador_NOT    shift and go to state 61
-    operador_igual  shift and go to state 62
+    parentesis_cierra shift and go to state 54
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_divicion shift and go to state 58
+    operador_resto  shift and go to state 59
+    operador_igualacion shift and go to state 60
+    operador_diferenciacion shift and go to state 61
+    operador_mayor  shift and go to state 62
+    operador_mayor_igual shift and go to state 63
+    operador_menor  shift and go to state 64
+    operador_menor_igual shift and go to state 65
+    operador_AND    shift and go to state 66
+    operador_OR     shift and go to state 67
+    operador_NOT    shift and go to state 68
+    operador_igual  shift and go to state 69
 
 
 state 30
@@ -645,17 +677,17 @@ state 30
 state 31
 
     (10) PRODDO_WHILE -> reservada_do INSTRUCCIONES_FACTORIZADO reservada_while . OPERACION_FACTORIZADO punto_coma
-    (56) OPERACION_FACTORIZADO -> . parentesis_abre OPERACION parentesis_cierra
+    (69) OPERACION_FACTORIZADO -> . parentesis_abre OPERACION parentesis_cierra
 
     parentesis_abre shift and go to state 22
 
-    OPERACION_FACTORIZADO          shift and go to state 63
+    OPERACION_FACTORIZADO          shift and go to state 70
 
 state 32
 
-    (57) INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES . llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES . llave_cierra
 
-    llave_cierra    shift and go to state 64
+    llave_cierra    shift and go to state 71
 
 
 state 33
@@ -709,19 +741,84 @@ state 39
 
 state 40
 
-    (39) DECLARACION -> TIPO_DATO . id operador_igual DATO punto_coma
+    (39) INSTRUCCIONES -> RETURN .
 
-    id              shift and go to state 65
+    llave_cierra    reduce using rule 39 (INSTRUCCIONES -> RETURN .)
 
 
 state 41
 
-    (40) ASINGACION -> id . operador_igual DATO punto_coma
+    (40) INSTRUCCIONES -> BREAK .
 
-    operador_igual  shift and go to state 66
+    llave_cierra    reduce using rule 40 (INSTRUCCIONES -> BREAK .)
 
 
 state 42
+
+    (41) INSTRUCCIONES -> CONTINUE .
+
+    llave_cierra    reduce using rule 41 (INSTRUCCIONES -> CONTINUE .)
+
+
+state 43
+
+    (42) INSTRUCCIONES -> LLAMADA .
+
+    llave_cierra    reduce using rule 42 (INSTRUCCIONES -> LLAMADA .)
+
+
+state 44
+
+    (43) DECLARACION -> TIPO_DATO . id operador_igual DATO punto_coma
+
+    id              shift and go to state 72
+
+
+state 45
+
+    (44) ASINGACION -> id . operador_igual DATO punto_coma
+    (60) LLAMADA -> id . parentesis_abre ARGUMENTOS parentesis_cierra
+
+    operador_igual  shift and go to state 73
+    parentesis_abre shift and go to state 74
+
+
+state 46
+
+    (65) RETURN -> reservada_return . punto_coma
+    (66) RETURN -> reservada_return . DATO punto_coma
+    (50) DATO -> . numero
+    (51) DATO -> . dato_double
+    (52) DATO -> . dato_string
+    (53) DATO -> . dato_char
+    (54) DATO -> . dato_boolean_true
+    (55) DATO -> . dato_boolean_false
+
+    punto_coma      shift and go to state 75
+    numero          shift and go to state 77
+    dato_double     shift and go to state 78
+    dato_string     shift and go to state 79
+    dato_char       shift and go to state 80
+    dato_boolean_true shift and go to state 81
+    dato_boolean_false shift and go to state 82
+
+    DATO                           shift and go to state 76
+
+state 47
+
+    (67) BREAK -> reservada_break . punto_coma
+
+    punto_coma      shift and go to state 83
+
+
+state 48
+
+    (68) CONTINUE -> reservada_continue . punto_coma
+
+    punto_coma      shift and go to state 84
+
+
+state 49
 
     (11) PRODWHILE -> reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO .
 
@@ -738,67 +835,67 @@ state 42
     llave_cierra    reduce using rule 11 (PRODWHILE -> reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO .)
 
 
-state 43
+state 50
 
     (14) PRODVOID -> reservada_void id PARAMETROS_FACTORIZADO . INSTRUCCIONES_FACTORIZADO
-    (57) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
 
     llave_abre      shift and go to state 24
 
-    INSTRUCCIONES_FACTORIZADO      shift and go to state 67
+    INSTRUCCIONES_FACTORIZADO      shift and go to state 85
 
-state 44
+state 51
 
-    (58) PARAMETROS_FACTORIZADO -> parentesis_abre . PARAMETROS parentesis_cierra
-    (53) PARAMETROS -> . PARAMETROS coma PARAMETRO
-    (54) PARAMETROS -> . PARAMETRO
-    (55) PARAMETROS -> .
-    (52) PARAMETRO -> . TIPO_DATO id
-    (41) TIPO_DATO -> . tipo_int
-    (42) TIPO_DATO -> . tipo_double
-    (43) TIPO_DATO -> . tipo_string
-    (44) TIPO_DATO -> . tipo_char
-    (45) TIPO_DATO -> . tipo_boolean
+    (71) PARAMETROS_FACTORIZADO -> parentesis_abre . PARAMETROS parentesis_cierra
+    (57) PARAMETROS -> . PARAMETROS coma PARAMETRO
+    (58) PARAMETROS -> . PARAMETRO
+    (59) PARAMETROS -> .
+    (56) PARAMETRO -> . TIPO_DATO id
+    (45) TIPO_DATO -> . tipo_int
+    (46) TIPO_DATO -> . tipo_double
+    (47) TIPO_DATO -> . tipo_string
+    (48) TIPO_DATO -> . tipo_char
+    (49) TIPO_DATO -> . tipo_boolean
 
-    parentesis_cierra reduce using rule 55 (PARAMETROS -> .)
-    coma            reduce using rule 55 (PARAMETROS -> .)
+    parentesis_cierra reduce using rule 59 (PARAMETROS -> .)
+    coma            reduce using rule 59 (PARAMETROS -> .)
     tipo_int        shift and go to state 15
     tipo_double     shift and go to state 16
     tipo_string     shift and go to state 17
     tipo_char       shift and go to state 18
     tipo_boolean    shift and go to state 19
 
-    PARAMETROS                     shift and go to state 68
-    PARAMETRO                      shift and go to state 69
-    TIPO_DATO                      shift and go to state 70
+    PARAMETROS                     shift and go to state 86
+    PARAMETRO                      shift and go to state 87
+    TIPO_DATO                      shift and go to state 88
 
-state 45
+state 52
 
     (15) PRODFUNCION -> TIPO_DATO id PARAMETROS_FACTORIZADO . INSTRUCCIONES_FACTORIZADO
-    (57) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
 
     llave_abre      shift and go to state 24
 
-    INSTRUCCIONES_FACTORIZADO      shift and go to state 71
+    INSTRUCCIONES_FACTORIZADO      shift and go to state 89
 
-state 46
+state 53
 
     (12) PRODIF_ELSE -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else . INSTRUCCIONES_FACTORIZADO
-    (57) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
+    (70) INSTRUCCIONES_FACTORIZADO -> . llave_abre INSTRUCCIONES llave_cierra
 
     llave_abre      shift and go to state 24
 
-    INSTRUCCIONES_FACTORIZADO      shift and go to state 72
+    INSTRUCCIONES_FACTORIZADO      shift and go to state 90
 
-state 47
+state 54
 
-    (56) OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra .
+    (69) OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra .
 
-    llave_abre      reduce using rule 56 (OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra .)
-    punto_coma      reduce using rule 56 (OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra .)
+    llave_abre      reduce using rule 69 (OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra .)
+    punto_coma      reduce using rule 69 (OPERACION_FACTORIZADO -> parentesis_abre OPERACION parentesis_cierra .)
 
 
-state 48
+state 55
 
     (16) OPERACION -> OPERACION operador_suma . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -820,9 +917,9 @@ state 48
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 73
+    OPERACION                      shift and go to state 91
 
-state 49
+state 56
 
     (17) OPERACION -> OPERACION operador_resta . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -844,9 +941,9 @@ state 49
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 74
+    OPERACION                      shift and go to state 92
 
-state 50
+state 57
 
     (18) OPERACION -> OPERACION operador_multiplicacion . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -868,9 +965,9 @@ state 50
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 75
+    OPERACION                      shift and go to state 93
 
-state 51
+state 58
 
     (19) OPERACION -> OPERACION operador_divicion . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -892,9 +989,9 @@ state 51
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 76
+    OPERACION                      shift and go to state 94
 
-state 52
+state 59
 
     (20) OPERACION -> OPERACION operador_resto . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -916,9 +1013,9 @@ state 52
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 77
+    OPERACION                      shift and go to state 95
 
-state 53
+state 60
 
     (21) OPERACION -> OPERACION operador_igualacion . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -940,9 +1037,9 @@ state 53
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 78
+    OPERACION                      shift and go to state 96
 
-state 54
+state 61
 
     (22) OPERACION -> OPERACION operador_diferenciacion . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -964,9 +1061,9 @@ state 54
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 79
+    OPERACION                      shift and go to state 97
 
-state 55
+state 62
 
     (23) OPERACION -> OPERACION operador_mayor . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -988,9 +1085,9 @@ state 55
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 80
+    OPERACION                      shift and go to state 98
 
-state 56
+state 63
 
     (24) OPERACION -> OPERACION operador_mayor_igual . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -1012,9 +1109,9 @@ state 56
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 81
+    OPERACION                      shift and go to state 99
 
-state 57
+state 64
 
     (25) OPERACION -> OPERACION operador_menor . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -1036,9 +1133,9 @@ state 57
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 82
+    OPERACION                      shift and go to state 100
 
-state 58
+state 65
 
     (26) OPERACION -> OPERACION operador_menor_igual . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -1060,9 +1157,9 @@ state 58
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 83
+    OPERACION                      shift and go to state 101
 
-state 59
+state 66
 
     (27) OPERACION -> OPERACION operador_AND . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -1084,9 +1181,9 @@ state 59
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 84
+    OPERACION                      shift and go to state 102
 
-state 60
+state 67
 
     (28) OPERACION -> OPERACION operador_OR . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -1108,9 +1205,9 @@ state 60
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 85
+    OPERACION                      shift and go to state 103
 
-state 61
+state 68
 
     (29) OPERACION -> OPERACION operador_NOT . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -1132,9 +1229,9 @@ state 61
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 86
+    OPERACION                      shift and go to state 104
 
-state 62
+state 69
 
     (30) OPERACION -> OPERACION operador_igual . OPERACION
     (16) OPERACION -> . OPERACION operador_suma OPERACION
@@ -1156,60 +1253,169 @@ state 62
 
     numero          shift and go to state 30
 
-    OPERACION                      shift and go to state 87
+    OPERACION                      shift and go to state 105
 
-state 63
+state 70
 
     (10) PRODDO_WHILE -> reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO . punto_coma
 
-    punto_coma      shift and go to state 88
+    punto_coma      shift and go to state 106
 
 
-state 64
+state 71
 
-    (57) INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .
+    (70) INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .
 
-    reservada_while reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    reservada_else  reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    reservada_if    reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    reservada_do    reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    reservada_void  reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    tipo_int        reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    tipo_double     reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    tipo_string     reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    tipo_char       reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    tipo_boolean    reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    $end            reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-    llave_cierra    reduce using rule 57 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
-
-
-state 65
-
-    (39) DECLARACION -> TIPO_DATO id . operador_igual DATO punto_coma
-
-    operador_igual  shift and go to state 89
+    reservada_while reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    reservada_else  reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    reservada_if    reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    reservada_do    reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    reservada_void  reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    tipo_int        reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    tipo_double     reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    tipo_string     reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    tipo_char       reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    tipo_boolean    reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    $end            reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
+    llave_cierra    reduce using rule 70 (INSTRUCCIONES_FACTORIZADO -> llave_abre INSTRUCCIONES llave_cierra .)
 
 
-state 66
+state 72
 
-    (40) ASINGACION -> id operador_igual . DATO punto_coma
-    (46) DATO -> . numero
-    (47) DATO -> . dato_double
-    (48) DATO -> . dato_string
-    (49) DATO -> . dato_char
-    (50) DATO -> . dato_boolean_true
-    (51) DATO -> . dato_boolean_false
+    (43) DECLARACION -> TIPO_DATO id . operador_igual DATO punto_coma
 
-    numero          shift and go to state 91
-    dato_double     shift and go to state 92
-    dato_string     shift and go to state 93
-    dato_char       shift and go to state 94
-    dato_boolean_true shift and go to state 95
-    dato_boolean_false shift and go to state 96
+    operador_igual  shift and go to state 107
 
-    DATO                           shift and go to state 90
 
-state 67
+state 73
+
+    (44) ASINGACION -> id operador_igual . DATO punto_coma
+    (50) DATO -> . numero
+    (51) DATO -> . dato_double
+    (52) DATO -> . dato_string
+    (53) DATO -> . dato_char
+    (54) DATO -> . dato_boolean_true
+    (55) DATO -> . dato_boolean_false
+
+    numero          shift and go to state 77
+    dato_double     shift and go to state 78
+    dato_string     shift and go to state 79
+    dato_char       shift and go to state 80
+    dato_boolean_true shift and go to state 81
+    dato_boolean_false shift and go to state 82
+
+    DATO                           shift and go to state 108
+
+state 74
+
+    (60) LLAMADA -> id parentesis_abre . ARGUMENTOS parentesis_cierra
+    (61) ARGUMENTOS -> . ARGUMENTOS coma ARGUMENTO
+    (62) ARGUMENTOS -> . ARGUMENTO
+    (63) ARGUMENTOS -> .
+    (64) ARGUMENTO -> . DATO
+    (50) DATO -> . numero
+    (51) DATO -> . dato_double
+    (52) DATO -> . dato_string
+    (53) DATO -> . dato_char
+    (54) DATO -> . dato_boolean_true
+    (55) DATO -> . dato_boolean_false
+
+    parentesis_cierra reduce using rule 63 (ARGUMENTOS -> .)
+    coma            reduce using rule 63 (ARGUMENTOS -> .)
+    numero          shift and go to state 77
+    dato_double     shift and go to state 78
+    dato_string     shift and go to state 79
+    dato_char       shift and go to state 80
+    dato_boolean_true shift and go to state 81
+    dato_boolean_false shift and go to state 82
+
+    ARGUMENTOS                     shift and go to state 109
+    ARGUMENTO                      shift and go to state 110
+    DATO                           shift and go to state 111
+
+state 75
+
+    (65) RETURN -> reservada_return punto_coma .
+
+    llave_cierra    reduce using rule 65 (RETURN -> reservada_return punto_coma .)
+
+
+state 76
+
+    (66) RETURN -> reservada_return DATO . punto_coma
+
+    punto_coma      shift and go to state 112
+
+
+state 77
+
+    (50) DATO -> numero .
+
+    punto_coma      reduce using rule 50 (DATO -> numero .)
+    parentesis_cierra reduce using rule 50 (DATO -> numero .)
+    coma            reduce using rule 50 (DATO -> numero .)
+
+
+state 78
+
+    (51) DATO -> dato_double .
+
+    punto_coma      reduce using rule 51 (DATO -> dato_double .)
+    parentesis_cierra reduce using rule 51 (DATO -> dato_double .)
+    coma            reduce using rule 51 (DATO -> dato_double .)
+
+
+state 79
+
+    (52) DATO -> dato_string .
+
+    punto_coma      reduce using rule 52 (DATO -> dato_string .)
+    parentesis_cierra reduce using rule 52 (DATO -> dato_string .)
+    coma            reduce using rule 52 (DATO -> dato_string .)
+
+
+state 80
+
+    (53) DATO -> dato_char .
+
+    punto_coma      reduce using rule 53 (DATO -> dato_char .)
+    parentesis_cierra reduce using rule 53 (DATO -> dato_char .)
+    coma            reduce using rule 53 (DATO -> dato_char .)
+
+
+state 81
+
+    (54) DATO -> dato_boolean_true .
+
+    punto_coma      reduce using rule 54 (DATO -> dato_boolean_true .)
+    parentesis_cierra reduce using rule 54 (DATO -> dato_boolean_true .)
+    coma            reduce using rule 54 (DATO -> dato_boolean_true .)
+
+
+state 82
+
+    (55) DATO -> dato_boolean_false .
+
+    punto_coma      reduce using rule 55 (DATO -> dato_boolean_false .)
+    parentesis_cierra reduce using rule 55 (DATO -> dato_boolean_false .)
+    coma            reduce using rule 55 (DATO -> dato_boolean_false .)
+
+
+state 83
+
+    (67) BREAK -> reservada_break punto_coma .
+
+    llave_cierra    reduce using rule 67 (BREAK -> reservada_break punto_coma .)
+
+
+state 84
+
+    (68) CONTINUE -> reservada_continue punto_coma .
+
+    llave_cierra    reduce using rule 68 (CONTINUE -> reservada_continue punto_coma .)
+
+
+state 85
 
     (14) PRODVOID -> reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO .
 
@@ -1226,31 +1432,31 @@ state 67
     llave_cierra    reduce using rule 14 (PRODVOID -> reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO .)
 
 
-state 68
+state 86
 
-    (58) PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS . parentesis_cierra
-    (53) PARAMETROS -> PARAMETROS . coma PARAMETRO
+    (71) PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS . parentesis_cierra
+    (57) PARAMETROS -> PARAMETROS . coma PARAMETRO
 
-    parentesis_cierra shift and go to state 97
-    coma            shift and go to state 98
-
-
-state 69
-
-    (54) PARAMETROS -> PARAMETRO .
-
-    parentesis_cierra reduce using rule 54 (PARAMETROS -> PARAMETRO .)
-    coma            reduce using rule 54 (PARAMETROS -> PARAMETRO .)
+    parentesis_cierra shift and go to state 113
+    coma            shift and go to state 114
 
 
-state 70
+state 87
 
-    (52) PARAMETRO -> TIPO_DATO . id
+    (58) PARAMETROS -> PARAMETRO .
 
-    id              shift and go to state 99
+    parentesis_cierra reduce using rule 58 (PARAMETROS -> PARAMETRO .)
+    coma            reduce using rule 58 (PARAMETROS -> PARAMETRO .)
 
 
-state 71
+state 88
+
+    (56) PARAMETRO -> TIPO_DATO . id
+
+    id              shift and go to state 115
+
+
+state 89
 
     (15) PRODFUNCION -> TIPO_DATO id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO .
 
@@ -1266,7 +1472,7 @@ state 71
     $end            reduce using rule 15 (PRODFUNCION -> TIPO_DATO id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO .)
 
 
-state 72
+state 90
 
     (12) PRODIF_ELSE -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO .
 
@@ -1283,7 +1489,7 @@ state 72
     llave_cierra    reduce using rule 12 (PRODIF_ELSE -> reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO .)
 
 
-state 73
+state 91
 
     (16) OPERACION -> OPERACION operador_suma OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1315,28 +1521,28 @@ state 73
     operador_AND    reduce using rule 16 (OPERACION -> OPERACION operador_suma OPERACION .)
     operador_OR     reduce using rule 16 (OPERACION -> OPERACION operador_suma OPERACION .)
     operador_igual  reduce using rule 16 (OPERACION -> OPERACION operador_suma OPERACION .)
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_NOT    shift and go to state 61
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_NOT    shift and go to state 68
 
   ! operador_multiplicacion [ reduce using rule 16 (OPERACION -> OPERACION operador_suma OPERACION .) ]
   ! operador_resto  [ reduce using rule 16 (OPERACION -> OPERACION operador_suma OPERACION .) ]
   ! operador_NOT    [ reduce using rule 16 (OPERACION -> OPERACION operador_suma OPERACION .) ]
-  ! operador_suma   [ shift and go to state 48 ]
-  ! operador_resta  [ shift and go to state 49 ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_suma   [ shift and go to state 55 ]
+  ! operador_resta  [ shift and go to state 56 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 74
+state 92
 
     (17) OPERACION -> OPERACION operador_resta OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1368,28 +1574,28 @@ state 74
     operador_AND    reduce using rule 17 (OPERACION -> OPERACION operador_resta OPERACION .)
     operador_OR     reduce using rule 17 (OPERACION -> OPERACION operador_resta OPERACION .)
     operador_igual  reduce using rule 17 (OPERACION -> OPERACION operador_resta OPERACION .)
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_NOT    shift and go to state 61
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_NOT    shift and go to state 68
 
   ! operador_multiplicacion [ reduce using rule 17 (OPERACION -> OPERACION operador_resta OPERACION .) ]
   ! operador_resto  [ reduce using rule 17 (OPERACION -> OPERACION operador_resta OPERACION .) ]
   ! operador_NOT    [ reduce using rule 17 (OPERACION -> OPERACION operador_resta OPERACION .) ]
-  ! operador_suma   [ shift and go to state 48 ]
-  ! operador_resta  [ shift and go to state 49 ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_suma   [ shift and go to state 55 ]
+  ! operador_resta  [ shift and go to state 56 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 75
+state 93
 
     (18) OPERACION -> OPERACION operador_multiplicacion OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1423,26 +1629,26 @@ state 75
     operador_AND    reduce using rule 18 (OPERACION -> OPERACION operador_multiplicacion OPERACION .)
     operador_OR     reduce using rule 18 (OPERACION -> OPERACION operador_multiplicacion OPERACION .)
     operador_igual  reduce using rule 18 (OPERACION -> OPERACION operador_multiplicacion OPERACION .)
-    operador_NOT    shift and go to state 61
+    operador_NOT    shift and go to state 68
 
   ! operador_NOT    [ reduce using rule 18 (OPERACION -> OPERACION operador_multiplicacion OPERACION .) ]
-  ! operador_suma   [ shift and go to state 48 ]
-  ! operador_resta  [ shift and go to state 49 ]
-  ! operador_multiplicacion [ shift and go to state 50 ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_resto  [ shift and go to state 52 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_suma   [ shift and go to state 55 ]
+  ! operador_resta  [ shift and go to state 56 ]
+  ! operador_multiplicacion [ shift and go to state 57 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_resto  [ shift and go to state 59 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 76
+state 94
 
     (19) OPERACION -> OPERACION operador_divicion OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1477,21 +1683,21 @@ state 76
   ! shift/reduce conflict for operador_NOT resolved as shift
   ! shift/reduce conflict for operador_igual resolved as shift
     parentesis_cierra reduce using rule 19 (OPERACION -> OPERACION operador_divicion OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_divicion shift and go to state 51
-    operador_resto  shift and go to state 52
-    operador_igualacion shift and go to state 53
-    operador_diferenciacion shift and go to state 54
-    operador_mayor  shift and go to state 55
-    operador_mayor_igual shift and go to state 56
-    operador_menor  shift and go to state 57
-    operador_menor_igual shift and go to state 58
-    operador_AND    shift and go to state 59
-    operador_OR     shift and go to state 60
-    operador_NOT    shift and go to state 61
-    operador_igual  shift and go to state 62
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_divicion shift and go to state 58
+    operador_resto  shift and go to state 59
+    operador_igualacion shift and go to state 60
+    operador_diferenciacion shift and go to state 61
+    operador_mayor  shift and go to state 62
+    operador_mayor_igual shift and go to state 63
+    operador_menor  shift and go to state 64
+    operador_menor_igual shift and go to state 65
+    operador_AND    shift and go to state 66
+    operador_OR     shift and go to state 67
+    operador_NOT    shift and go to state 68
+    operador_igual  shift and go to state 69
 
   ! operador_suma   [ reduce using rule 19 (OPERACION -> OPERACION operador_divicion OPERACION .) ]
   ! operador_resta  [ reduce using rule 19 (OPERACION -> OPERACION operador_divicion OPERACION .) ]
@@ -1510,7 +1716,7 @@ state 76
   ! operador_igual  [ reduce using rule 19 (OPERACION -> OPERACION operador_divicion OPERACION .) ]
 
 
-state 77
+state 95
 
     (20) OPERACION -> OPERACION operador_resto OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1544,26 +1750,26 @@ state 77
     operador_AND    reduce using rule 20 (OPERACION -> OPERACION operador_resto OPERACION .)
     operador_OR     reduce using rule 20 (OPERACION -> OPERACION operador_resto OPERACION .)
     operador_igual  reduce using rule 20 (OPERACION -> OPERACION operador_resto OPERACION .)
-    operador_NOT    shift and go to state 61
+    operador_NOT    shift and go to state 68
 
   ! operador_NOT    [ reduce using rule 20 (OPERACION -> OPERACION operador_resto OPERACION .) ]
-  ! operador_suma   [ shift and go to state 48 ]
-  ! operador_resta  [ shift and go to state 49 ]
-  ! operador_multiplicacion [ shift and go to state 50 ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_resto  [ shift and go to state 52 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_suma   [ shift and go to state 55 ]
+  ! operador_resta  [ shift and go to state 56 ]
+  ! operador_multiplicacion [ shift and go to state 57 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_resto  [ shift and go to state 59 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 78
+state 96
 
     (21) OPERACION -> OPERACION operador_igualacion OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1589,15 +1795,15 @@ state 78
     operador_AND    reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .)
     operador_OR     reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .)
     operador_igual  reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_mayor  shift and go to state 55
-    operador_mayor_igual shift and go to state 56
-    operador_menor  shift and go to state 57
-    operador_menor_igual shift and go to state 58
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_mayor  shift and go to state 62
+    operador_mayor_igual shift and go to state 63
+    operador_menor  shift and go to state 64
+    operador_menor_igual shift and go to state 65
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .) ]
   ! operador_resta  [ reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .) ]
@@ -1608,15 +1814,15 @@ state 78
   ! operador_menor  [ reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .) ]
   ! operador_menor_igual [ reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .) ]
   ! operador_NOT    [ reduce using rule 21 (OPERACION -> OPERACION operador_igualacion OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 79
+state 97
 
     (22) OPERACION -> OPERACION operador_diferenciacion OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1642,15 +1848,15 @@ state 79
     operador_AND    reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .)
     operador_OR     reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .)
     operador_igual  reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_mayor  shift and go to state 55
-    operador_mayor_igual shift and go to state 56
-    operador_menor  shift and go to state 57
-    operador_menor_igual shift and go to state 58
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_mayor  shift and go to state 62
+    operador_mayor_igual shift and go to state 63
+    operador_menor  shift and go to state 64
+    operador_menor_igual shift and go to state 65
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .) ]
   ! operador_resta  [ reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .) ]
@@ -1661,15 +1867,15 @@ state 79
   ! operador_menor  [ reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .) ]
   ! operador_menor_igual [ reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .) ]
   ! operador_NOT    [ reduce using rule 22 (OPERACION -> OPERACION operador_diferenciacion OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 80
+state 98
 
     (23) OPERACION -> OPERACION operador_mayor OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1699,30 +1905,30 @@ state 80
     operador_AND    reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .)
     operador_OR     reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .)
     operador_igual  reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .) ]
   ! operador_resta  [ reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .) ]
   ! operador_multiplicacion [ reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .) ]
   ! operador_resto  [ reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .) ]
   ! operador_NOT    [ reduce using rule 23 (OPERACION -> OPERACION operador_mayor OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 81
+state 99
 
     (24) OPERACION -> OPERACION operador_mayor_igual OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1752,30 +1958,30 @@ state 81
     operador_AND    reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .)
     operador_OR     reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .)
     operador_igual  reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .) ]
   ! operador_resta  [ reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .) ]
   ! operador_multiplicacion [ reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .) ]
   ! operador_resto  [ reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .) ]
   ! operador_NOT    [ reduce using rule 24 (OPERACION -> OPERACION operador_mayor_igual OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 82
+state 100
 
     (25) OPERACION -> OPERACION operador_menor OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1805,30 +2011,30 @@ state 82
     operador_AND    reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .)
     operador_OR     reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .)
     operador_igual  reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .) ]
   ! operador_resta  [ reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .) ]
   ! operador_multiplicacion [ reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .) ]
   ! operador_resto  [ reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .) ]
   ! operador_NOT    [ reduce using rule 25 (OPERACION -> OPERACION operador_menor OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 83
+state 101
 
     (26) OPERACION -> OPERACION operador_menor_igual OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1858,30 +2064,30 @@ state 83
     operador_AND    reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .)
     operador_OR     reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .)
     operador_igual  reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .) ]
   ! operador_resta  [ reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .) ]
   ! operador_multiplicacion [ reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .) ]
   ! operador_resto  [ reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .) ]
   ! operador_NOT    [ reduce using rule 26 (OPERACION -> OPERACION operador_menor_igual OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 84
+state 102
 
     (27) OPERACION -> OPERACION operador_AND OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1905,17 +2111,17 @@ state 84
     operador_AND    reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .)
     operador_OR     reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .)
     operador_igual  reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_igualacion shift and go to state 53
-    operador_diferenciacion shift and go to state 54
-    operador_mayor  shift and go to state 55
-    operador_mayor_igual shift and go to state 56
-    operador_menor  shift and go to state 57
-    operador_menor_igual shift and go to state 58
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_igualacion shift and go to state 60
+    operador_diferenciacion shift and go to state 61
+    operador_mayor  shift and go to state 62
+    operador_mayor_igual shift and go to state 63
+    operador_menor  shift and go to state 64
+    operador_menor_igual shift and go to state 65
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .) ]
   ! operador_resta  [ reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .) ]
@@ -1928,13 +2134,13 @@ state 84
   ! operador_menor  [ reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .) ]
   ! operador_menor_igual [ reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .) ]
   ! operador_NOT    [ reduce using rule 27 (OPERACION -> OPERACION operador_AND OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 85
+state 103
 
     (28) OPERACION -> OPERACION operador_OR OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -1957,18 +2163,18 @@ state 85
     operador_divicion reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .)
     operador_OR     reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .)
     operador_igual  reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_resto  shift and go to state 52
-    operador_igualacion shift and go to state 53
-    operador_diferenciacion shift and go to state 54
-    operador_mayor  shift and go to state 55
-    operador_mayor_igual shift and go to state 56
-    operador_menor  shift and go to state 57
-    operador_menor_igual shift and go to state 58
-    operador_AND    shift and go to state 59
-    operador_NOT    shift and go to state 61
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_resto  shift and go to state 59
+    operador_igualacion shift and go to state 60
+    operador_diferenciacion shift and go to state 61
+    operador_mayor  shift and go to state 62
+    operador_mayor_igual shift and go to state 63
+    operador_menor  shift and go to state 64
+    operador_menor_igual shift and go to state 65
+    operador_AND    shift and go to state 66
+    operador_NOT    shift and go to state 68
 
   ! operador_suma   [ reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .) ]
   ! operador_resta  [ reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .) ]
@@ -1982,12 +2188,12 @@ state 85
   ! operador_menor_igual [ reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .) ]
   ! operador_AND    [ reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .) ]
   ! operador_NOT    [ reduce using rule 28 (OPERACION -> OPERACION operador_OR OPERACION .) ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 86
+state 104
 
     (29) OPERACION -> OPERACION operador_NOT OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -2021,26 +2227,26 @@ state 86
     operador_AND    reduce using rule 29 (OPERACION -> OPERACION operador_NOT OPERACION .)
     operador_OR     reduce using rule 29 (OPERACION -> OPERACION operador_NOT OPERACION .)
     operador_igual  reduce using rule 29 (OPERACION -> OPERACION operador_NOT OPERACION .)
-    operador_NOT    shift and go to state 61
+    operador_NOT    shift and go to state 68
 
   ! operador_NOT    [ reduce using rule 29 (OPERACION -> OPERACION operador_NOT OPERACION .) ]
-  ! operador_suma   [ shift and go to state 48 ]
-  ! operador_resta  [ shift and go to state 49 ]
-  ! operador_multiplicacion [ shift and go to state 50 ]
-  ! operador_divicion [ shift and go to state 51 ]
-  ! operador_resto  [ shift and go to state 52 ]
-  ! operador_igualacion [ shift and go to state 53 ]
-  ! operador_diferenciacion [ shift and go to state 54 ]
-  ! operador_mayor  [ shift and go to state 55 ]
-  ! operador_mayor_igual [ shift and go to state 56 ]
-  ! operador_menor  [ shift and go to state 57 ]
-  ! operador_menor_igual [ shift and go to state 58 ]
-  ! operador_AND    [ shift and go to state 59 ]
-  ! operador_OR     [ shift and go to state 60 ]
-  ! operador_igual  [ shift and go to state 62 ]
+  ! operador_suma   [ shift and go to state 55 ]
+  ! operador_resta  [ shift and go to state 56 ]
+  ! operador_multiplicacion [ shift and go to state 57 ]
+  ! operador_divicion [ shift and go to state 58 ]
+  ! operador_resto  [ shift and go to state 59 ]
+  ! operador_igualacion [ shift and go to state 60 ]
+  ! operador_diferenciacion [ shift and go to state 61 ]
+  ! operador_mayor  [ shift and go to state 62 ]
+  ! operador_mayor_igual [ shift and go to state 63 ]
+  ! operador_menor  [ shift and go to state 64 ]
+  ! operador_menor_igual [ shift and go to state 65 ]
+  ! operador_AND    [ shift and go to state 66 ]
+  ! operador_OR     [ shift and go to state 67 ]
+  ! operador_igual  [ shift and go to state 69 ]
 
 
-state 87
+state 105
 
     (30) OPERACION -> OPERACION operador_igual OPERACION .
     (16) OPERACION -> OPERACION . operador_suma OPERACION
@@ -2075,21 +2281,21 @@ state 87
   ! shift/reduce conflict for operador_NOT resolved as shift
   ! shift/reduce conflict for operador_igual resolved as shift
     parentesis_cierra reduce using rule 30 (OPERACION -> OPERACION operador_igual OPERACION .)
-    operador_suma   shift and go to state 48
-    operador_resta  shift and go to state 49
-    operador_multiplicacion shift and go to state 50
-    operador_divicion shift and go to state 51
-    operador_resto  shift and go to state 52
-    operador_igualacion shift and go to state 53
-    operador_diferenciacion shift and go to state 54
-    operador_mayor  shift and go to state 55
-    operador_mayor_igual shift and go to state 56
-    operador_menor  shift and go to state 57
-    operador_menor_igual shift and go to state 58
-    operador_AND    shift and go to state 59
-    operador_OR     shift and go to state 60
-    operador_NOT    shift and go to state 61
-    operador_igual  shift and go to state 62
+    operador_suma   shift and go to state 55
+    operador_resta  shift and go to state 56
+    operador_multiplicacion shift and go to state 57
+    operador_divicion shift and go to state 58
+    operador_resto  shift and go to state 59
+    operador_igualacion shift and go to state 60
+    operador_diferenciacion shift and go to state 61
+    operador_mayor  shift and go to state 62
+    operador_mayor_igual shift and go to state 63
+    operador_menor  shift and go to state 64
+    operador_menor_igual shift and go to state 65
+    operador_AND    shift and go to state 66
+    operador_OR     shift and go to state 67
+    operador_NOT    shift and go to state 68
+    operador_igual  shift and go to state 69
 
   ! operador_suma   [ reduce using rule 30 (OPERACION -> OPERACION operador_igual OPERACION .) ]
   ! operador_resta  [ reduce using rule 30 (OPERACION -> OPERACION operador_igual OPERACION .) ]
@@ -2108,7 +2314,7 @@ state 87
   ! operador_igual  [ reduce using rule 30 (OPERACION -> OPERACION operador_igual OPERACION .) ]
 
 
-state 88
+state 106
 
     (10) PRODDO_WHILE -> reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma .
 
@@ -2125,90 +2331,80 @@ state 88
     llave_cierra    reduce using rule 10 (PRODDO_WHILE -> reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma .)
 
 
-state 89
+state 107
 
-    (39) DECLARACION -> TIPO_DATO id operador_igual . DATO punto_coma
-    (46) DATO -> . numero
-    (47) DATO -> . dato_double
-    (48) DATO -> . dato_string
-    (49) DATO -> . dato_char
-    (50) DATO -> . dato_boolean_true
-    (51) DATO -> . dato_boolean_false
+    (43) DECLARACION -> TIPO_DATO id operador_igual . DATO punto_coma
+    (50) DATO -> . numero
+    (51) DATO -> . dato_double
+    (52) DATO -> . dato_string
+    (53) DATO -> . dato_char
+    (54) DATO -> . dato_boolean_true
+    (55) DATO -> . dato_boolean_false
 
-    numero          shift and go to state 91
-    dato_double     shift and go to state 92
-    dato_string     shift and go to state 93
-    dato_char       shift and go to state 94
-    dato_boolean_true shift and go to state 95
-    dato_boolean_false shift and go to state 96
+    numero          shift and go to state 77
+    dato_double     shift and go to state 78
+    dato_string     shift and go to state 79
+    dato_char       shift and go to state 80
+    dato_boolean_true shift and go to state 81
+    dato_boolean_false shift and go to state 82
 
-    DATO                           shift and go to state 100
+    DATO                           shift and go to state 116
 
-state 90
+state 108
 
-    (40) ASINGACION -> id operador_igual DATO . punto_coma
+    (44) ASINGACION -> id operador_igual DATO . punto_coma
 
-    punto_coma      shift and go to state 101
-
-
-state 91
-
-    (46) DATO -> numero .
-
-    punto_coma      reduce using rule 46 (DATO -> numero .)
+    punto_coma      shift and go to state 117
 
 
-state 92
+state 109
 
-    (47) DATO -> dato_double .
+    (60) LLAMADA -> id parentesis_abre ARGUMENTOS . parentesis_cierra
+    (61) ARGUMENTOS -> ARGUMENTOS . coma ARGUMENTO
 
-    punto_coma      reduce using rule 47 (DATO -> dato_double .)
-
-
-state 93
-
-    (48) DATO -> dato_string .
-
-    punto_coma      reduce using rule 48 (DATO -> dato_string .)
+    parentesis_cierra shift and go to state 118
+    coma            shift and go to state 119
 
 
-state 94
+state 110
 
-    (49) DATO -> dato_char .
+    (62) ARGUMENTOS -> ARGUMENTO .
 
-    punto_coma      reduce using rule 49 (DATO -> dato_char .)
-
-
-state 95
-
-    (50) DATO -> dato_boolean_true .
-
-    punto_coma      reduce using rule 50 (DATO -> dato_boolean_true .)
+    parentesis_cierra reduce using rule 62 (ARGUMENTOS -> ARGUMENTO .)
+    coma            reduce using rule 62 (ARGUMENTOS -> ARGUMENTO .)
 
 
-state 96
+state 111
 
-    (51) DATO -> dato_boolean_false .
+    (64) ARGUMENTO -> DATO .
 
-    punto_coma      reduce using rule 51 (DATO -> dato_boolean_false .)
-
-
-state 97
-
-    (58) PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS parentesis_cierra .
-
-    llave_abre      reduce using rule 58 (PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS parentesis_cierra .)
+    parentesis_cierra reduce using rule 64 (ARGUMENTO -> DATO .)
+    coma            reduce using rule 64 (ARGUMENTO -> DATO .)
 
 
-state 98
+state 112
 
-    (53) PARAMETROS -> PARAMETROS coma . PARAMETRO
-    (52) PARAMETRO -> . TIPO_DATO id
-    (41) TIPO_DATO -> . tipo_int
-    (42) TIPO_DATO -> . tipo_double
-    (43) TIPO_DATO -> . tipo_string
-    (44) TIPO_DATO -> . tipo_char
-    (45) TIPO_DATO -> . tipo_boolean
+    (66) RETURN -> reservada_return DATO punto_coma .
+
+    llave_cierra    reduce using rule 66 (RETURN -> reservada_return DATO punto_coma .)
+
+
+state 113
+
+    (71) PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS parentesis_cierra .
+
+    llave_abre      reduce using rule 71 (PARAMETROS_FACTORIZADO -> parentesis_abre PARAMETROS parentesis_cierra .)
+
+
+state 114
+
+    (57) PARAMETROS -> PARAMETROS coma . PARAMETRO
+    (56) PARAMETRO -> . TIPO_DATO id
+    (45) TIPO_DATO -> . tipo_int
+    (46) TIPO_DATO -> . tipo_double
+    (47) TIPO_DATO -> . tipo_string
+    (48) TIPO_DATO -> . tipo_char
+    (49) TIPO_DATO -> . tipo_boolean
 
     tipo_int        shift and go to state 15
     tipo_double     shift and go to state 16
@@ -2216,75 +2412,111 @@ state 98
     tipo_char       shift and go to state 18
     tipo_boolean    shift and go to state 19
 
-    PARAMETRO                      shift and go to state 102
-    TIPO_DATO                      shift and go to state 70
+    PARAMETRO                      shift and go to state 120
+    TIPO_DATO                      shift and go to state 88
 
-state 99
+state 115
 
-    (52) PARAMETRO -> TIPO_DATO id .
+    (56) PARAMETRO -> TIPO_DATO id .
 
-    parentesis_cierra reduce using rule 52 (PARAMETRO -> TIPO_DATO id .)
-    coma            reduce using rule 52 (PARAMETRO -> TIPO_DATO id .)
-
-
-state 100
-
-    (39) DECLARACION -> TIPO_DATO id operador_igual DATO . punto_coma
-
-    punto_coma      shift and go to state 103
+    parentesis_cierra reduce using rule 56 (PARAMETRO -> TIPO_DATO id .)
+    coma            reduce using rule 56 (PARAMETRO -> TIPO_DATO id .)
 
 
-state 101
+state 116
 
-    (40) ASINGACION -> id operador_igual DATO punto_coma .
+    (43) DECLARACION -> TIPO_DATO id operador_igual DATO . punto_coma
 
-    llave_cierra    reduce using rule 40 (ASINGACION -> id operador_igual DATO punto_coma .)
-
-
-state 102
-
-    (53) PARAMETROS -> PARAMETROS coma PARAMETRO .
-
-    parentesis_cierra reduce using rule 53 (PARAMETROS -> PARAMETROS coma PARAMETRO .)
-    coma            reduce using rule 53 (PARAMETROS -> PARAMETROS coma PARAMETRO .)
+    punto_coma      shift and go to state 121
 
 
-state 103
+state 117
 
-    (39) DECLARACION -> TIPO_DATO id operador_igual DATO punto_coma .
+    (44) ASINGACION -> id operador_igual DATO punto_coma .
 
-    llave_cierra    reduce using rule 39 (DECLARACION -> TIPO_DATO id operador_igual DATO punto_coma .)
+    llave_cierra    reduce using rule 44 (ASINGACION -> id operador_igual DATO punto_coma .)
+
+
+state 118
+
+    (60) LLAMADA -> id parentesis_abre ARGUMENTOS parentesis_cierra .
+
+    llave_cierra    reduce using rule 60 (LLAMADA -> id parentesis_abre ARGUMENTOS parentesis_cierra .)
+
+
+state 119
+
+    (61) ARGUMENTOS -> ARGUMENTOS coma . ARGUMENTO
+    (64) ARGUMENTO -> . DATO
+    (50) DATO -> . numero
+    (51) DATO -> . dato_double
+    (52) DATO -> . dato_string
+    (53) DATO -> . dato_char
+    (54) DATO -> . dato_boolean_true
+    (55) DATO -> . dato_boolean_false
+
+    numero          shift and go to state 77
+    dato_double     shift and go to state 78
+    dato_string     shift and go to state 79
+    dato_char       shift and go to state 80
+    dato_boolean_true shift and go to state 81
+    dato_boolean_false shift and go to state 82
+
+    ARGUMENTO                      shift and go to state 122
+    DATO                           shift and go to state 111
+
+state 120
+
+    (57) PARAMETROS -> PARAMETROS coma PARAMETRO .
+
+    parentesis_cierra reduce using rule 57 (PARAMETROS -> PARAMETROS coma PARAMETRO .)
+    coma            reduce using rule 57 (PARAMETROS -> PARAMETROS coma PARAMETRO .)
+
+
+state 121
+
+    (43) DECLARACION -> TIPO_DATO id operador_igual DATO punto_coma .
+
+    llave_cierra    reduce using rule 43 (DECLARACION -> TIPO_DATO id operador_igual DATO punto_coma .)
+
+
+state 122
+
+    (61) ARGUMENTOS -> ARGUMENTOS coma ARGUMENTO .
+
+    parentesis_cierra reduce using rule 61 (ARGUMENTOS -> ARGUMENTOS coma ARGUMENTO .)
+    coma            reduce using rule 61 (ARGUMENTOS -> ARGUMENTOS coma ARGUMENTO .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for operador_suma in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_resta in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_multiplicacion in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_divicion in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_resto in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_igualacion in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_diferenciacion in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_mayor in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_mayor_igual in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_menor in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_menor_igual in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_AND in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_OR in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_NOT in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_igual in state 76 resolved as shift
-WARNING: shift/reduce conflict for operador_suma in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_resta in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_multiplicacion in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_divicion in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_resto in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_igualacion in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_diferenciacion in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_mayor in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_mayor_igual in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_menor in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_menor_igual in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_AND in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_OR in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_NOT in state 87 resolved as shift
-WARNING: shift/reduce conflict for operador_igual in state 87 resolved as shift
+WARNING: shift/reduce conflict for operador_suma in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_resta in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_multiplicacion in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_divicion in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_resto in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_igualacion in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_diferenciacion in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_mayor in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_mayor_igual in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_menor in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_menor_igual in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_AND in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_OR in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_NOT in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_igual in state 94 resolved as shift
+WARNING: shift/reduce conflict for operador_suma in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_resta in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_multiplicacion in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_divicion in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_resto in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_igualacion in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_diferenciacion in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_mayor in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_mayor_igual in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_menor in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_menor_igual in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_AND in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_OR in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_NOT in state 105 resolved as shift
+WARNING: shift/reduce conflict for operador_igual in state 105 resolved as shift

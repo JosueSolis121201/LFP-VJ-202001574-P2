@@ -410,7 +410,7 @@ def p_BREAK(p):
     p[0] = p[1]
 def p_CONTINUE(p):
     '''
-    RETURN : reservada_continue punto_coma 
+    CONTINUE : reservada_continue punto_coma 
     '''
     p[0] = p[1]
 
@@ -498,8 +498,8 @@ INPUT = r'''
 if (5*5) {int a = 55 ;} else {int a = 55 ;}
 while (5*5) {int a = 55 ;}
 do {int a = 55 ;} while (5*5) ;
+void a (int a) {string a = "55";}
 void a (int a) {int a = 55;}
-void a (string b) {int a = 55;}
 '''
 
 ast = parser.parse(INPUT, lexer)
