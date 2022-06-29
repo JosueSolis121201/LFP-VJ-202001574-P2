@@ -1,6 +1,8 @@
 from ply.yacc import yacc
 import json
 from ply.lex import lex
+from reporte_tokens import clase_token
+import graphviz
 
 
 def getColumn(t):
@@ -495,18 +497,86 @@ parser = yacc()
 # lexer.lex(reflags=re.IGNORECASE)  # case insensitive
 
 INPUT = r'''
-if (5*5) {int a = 55 ;} else {int a = 55 ;}
-while (5*5) {int a = 55 ;}
-do {int a = 55 ;} while (5*5) ;
-void a (int a) {string a = "55";}
-void a (int a) {int a = 55;}
+if (5*5) {int a = "s";} else {int a = 55 ;}
+
+if (1*1) {int a = 1;} else {int a = 1;}
 '''
 
 ast = parser.parse(INPUT, lexer)
 
 print(json.dumps(ast, indent=10, sort_keys=False))
 
-"""#! impresion de tokens
+
+"""while (5*5) {int a = 55 ;}
+do {int a = 55 ;} while (5*5) ;
+void a (int a) {string a = "55";}
+void a (int a) {int a = 55;}"""
+
+
+#! ARBOL SINTACTICO
+def graficar(self):
+    inicio = """digraph html {"""
+    final ="""}"""
+ 
+    medio = self.pedidos.imprimir()
+
+    documento = inicio + medio + final
+    g = Source(documento, filename="gola" +'_copia.gv',format="png")
+    g.view()
+
+def imprimir(self):
+    puntero= self.end
+    dato_pizza=""
+    while puntero != None:
+        print(puntero.dato)
+            
+        dato_pizza= dato_pizza + "Q"+str(id(puntero.dato))+"[label=\""+puntero.dato.string()+"\"]\n"
+        if puntero.anterior != None:
+            dato_pizza=dato_pizza+"Q"+str(id(puntero.dato)) +"->"+"Q"+str(id(puntero.anterior.dato))+"\n"
+
+        puntero = puntero.anterior
+
+    return dato_pizza
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#! impresion de tokens
+lista_tokens=[]
 lexer.input(INPUT)
+linea=0
+iteracion=0
 for tok in lexer:
-    print(tok)"""
+    iteracion=iteracion+1
+    columna=getColumn(tok)
+    if columna == 1:
+        linea = linea +1
+    lista_tokens.append(clase_token(linea,columna,tok.value,tok.type,iteracion))
+    
+inicio="<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"estilo.css\"/></head><body>"
+cuerpo = "<table class=\"styled-table\"><tr class=\"active-row\"><th>LINEA</th><th>COLUMNA</th><th>LEXEMA</th><th>TIPO</th></tr><tbody>"
+concatenar = ""
+for element in lista_tokens:
+    concatenar = concatenar + element.html()
+cuerpo_token="<h1>REPORTE DE TOKENS</h1>"+ cuerpo +concatenar+ "</tbody></table>"
+final = inicio +cuerpo_token+"</html></body>"
+#input("introdusca el nombre del reporte HTML :")
+f = open ("si"+".html",'w')
+f.write(final)
+f.close()
+
+
