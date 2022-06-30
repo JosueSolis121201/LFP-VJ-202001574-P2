@@ -2,12 +2,72 @@ from ply.yacc import yacc
 import json
 from ply.lex import lex
 from reporte_tokens import clase_token
-import graphviz
+from graphviz import Source
 
 
 def getColumn(t):
     line_start = INPUT.rfind('\n', 0, t.lexpos) + 1
     return (t.lexpos-line_start)+1
+    
+def graficar(string):
+    inicio = 'digraph html {'
+    final ='}'
+    medio = ""
+    id=""
+    numero=0
+    id_final=""
+    for data in string:
+        medio=medio + data
+        for letra in zip(range(14), data):
+            id=id +letra[1]
+        if string[numero] != None:
+            id=id +"->"
+        
+        numero=numero+1
+    for mega_data in zip(range(len(id)-2),id):
+            id_final=id_final +mega_data[1]
+    print(id_final)
+        
+
+    documento = inicio + medio+id_final + final
+    #input("introdusca el nombre del reporte HTML :")
+    g = Source(documento, filename="gola",format="pdf")
+    g.view()
+
+def label(a):
+    label_arbol=[]
+    x=0
+    for hoja in a :
+        if type(hoja) == list:
+            y=0
+            for sub_hoja_1 in hoja:
+                if type(sub_hoja_1) == list:
+                    b=0
+                    for sub_hoja_2 in sub_hoja_1:
+                        if type(sub_hoja_2) == list:
+                            c=0
+                            for sub_hoja_3 in sub_hoja_2:
+                                if type(sub_hoja_3) == list:
+                                    d=0
+                                    for sub_hoja_4 in sub_hoja_3:
+                                        if type(sub_hoja_1) == list:
+                                            patear=0
+                                        else:
+                                            label_arbol.append("Q"+str(id(a[c]))+"[label=\""+str(sub_hoja_4)+"\"]\n")
+                                        d=d+1
+                                else:
+                                    label_arbol.append("Q"+str(id(a[c]))+"[label=\""+str(sub_hoja_3)+"\"]\n")
+                                c=c+1
+                        else:
+                            label_arbol.append("Q"+str(id(a[b]))+"[label=\""+str(sub_hoja_2)+"\"]\n")
+                        b=b+1
+                else:
+                    label_arbol.append("Q"+str(id(a[y]))+"[label=\""+str(sub_hoja_1)+"\"]\n")
+                y=y+1
+        else:
+            label_arbol.append("Q"+str(id(a[x]))+"[label=\""+str(hoja)+"\"]\n")
+        x=x+1
+    return label_arbol
 
 
 # Tokens
@@ -192,60 +252,20 @@ precedence = (
     ('left', 'operador_multiplicacion', 'operador_resto'),
     ('right', 'operador_NOT')
 )
-"""
-ASOCIATIVIDAD IZQUIERDA (left)
-((5 + 5) + 5)
-((5 ^ 5) ^ 5)
-ASOCIATIVIDAD DERECHA (right)
-(5 + (5 + 5))
-(5 ^ (5 ^ 5))
-"""
-#! importante
-"""
-p[0] : Lado izquierdo de la producción
-p[1+] : Lado derecho de la producción
-Lo que habrá en los elementos del lado derecho será:
-- Un token si es un símbolo terminal
-- Lo que regresemos de su producción si es un símbolo no terminal
-Para retornar algo de una producción se debe asignar a p[0]
-"""
+
 # Producciones
-#! Aqui se definen producciones
-"""def p_sintactico(p):
-  '''
-  SINTACTICO : IF
-
-               
-  '''
-  p[0] = p[1]
-
-def p_IF(p):
-  '''
-  IF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-  '''
-  p[0] = p[1]
-
-def p_OPERACION(p):
-  '''
-  IF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
-  '''
-  p[0] = p[1]
-
-
-"""
-
 
 def p_S0(p):
     '''
       S0 : INITIAL
     '''
-    print(p[1], "arroba")
+    #print(p[1])
 def p_INITIAL_RECURSIVO(p):
     '''
     INITIAL : INITIAL ESTRUCTURA
     '''
-    p[1].append(p[2]) #! nose xd
-    p[0] = p[1] 
+    p[1].append(p[2]) 
+    p[0] = p[1]
 def p_INITIAL_INICIAL(p):
     '''
     INITIAL : ESTRUCTURA
@@ -260,47 +280,55 @@ def p_ESTRUCTURA(p):
                | PRODWHILE
                | PRODVOID
                | PRODFUNCION
+               | DECLARACION
                  
     '''
     p[0] = p[1]
+    label_string =label(p[0])
+    graficar(label_string)
 
 def p_ESTRUCTURA_PRODDO_WHILE(p):
     '''
     PRODDO_WHILE : reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma
     '''
-    p[0] = p[0]
-
+    p[0] = p[1]
 def p_ESTRUCTURA_PRODWHILE(p):
     '''
     PRODWHILE : reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO 
     '''
-    p[0] = p[0]
-
+    p[0] = p[1]
 def p_ESTRUCTURA_IF_ELSE(p):
     '''
     PRODIF_ELSE : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO
     '''
-    p[0] = p[1]
-
+    p[0] = [p[1]]
+    p[0].append(p[2])
+    p[0].append(p[3])
+    p[0].append(p[4])
+    p[0].append(p[5]) 
+    
 def p_ESTRUCTURA_IF(p):
     '''
     PRODIF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     '''
     p[0] = p[1]
-
 def p_ESTRUCTURA_VOID(p):
     '''
     PRODVOID : reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     '''
     p[0] = p[1]
-
 def p_ESTRUCTURA_FUNCION(p):
     '''
     PRODFUNCION : TIPO_DATO id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     '''
     p[0] = p[1]
 
-
+def p_OPERACIONES(p):
+    '''
+    OPERACIONES : OPERACIONES OPERACION
+                | OPERACION
+    '''
+    p[0] = p[1]
 def p_OPERACION(p):
     '''
     OPERACION : OPERACION operador_suma OPERACION
@@ -320,6 +348,12 @@ def p_OPERACION(p):
             |   OPERACION operador_igual OPERACION
             |   numero
     '''
+    p[0]=[p[1]]
+    for s in p:
+        if s != None:
+            if s == "+" or s == "*"  or s == "-" or s == "/" or s == "%" or s == "==" or s == "!="  or s == ">" or s == ">=" or s == "<" or s == "<=" or s == "&&" or s == "||" or s == "!" or s == "=":
+                p[0].append(p[2]) 
+                
 def p_INSTRUCCIONES(p):
     '''
     INSTRUCCIONES : DECLARACION
@@ -341,12 +375,14 @@ def p_DECLARACIONES(p):
     '''
     DECLARACION : TIPO_DATO id operador_igual DATO punto_coma
     '''
-    p[0] = p[1]
+    p[0] = (p[1])
+    
+
 def p_ASIGNACION(p):
     '''
     ASINGACION : id operador_igual DATO punto_coma
     '''
-    p[0] = p[1]
+    p[0] = p[3]
 def p_TIPO_DATO(p):
   '''
   TIPO_DATO : tipo_int 
@@ -385,7 +421,7 @@ def p_LLAMADA(p):
     '''
     LLAMADA : id parentesis_abre ARGUMENTOS parentesis_cierra
     '''
-    p[0] = p[1]
+    p[0] = p[2]
 def p_ARGUMENTOS(p):
     '''
     ARGUMENTOS :  ARGUMENTOS coma ARGUMENTO 
@@ -417,64 +453,38 @@ def p_CONTINUE(p):
     p[0] = p[1]
 
 
+
+
+
+
+
+
+
 def p_FACTORIZACION_OPERACION(p):
     '''
-    OPERACION_FACTORIZADO : parentesis_abre OPERACION parentesis_cierra
+    OPERACION_FACTORIZADO : parentesis_abre OPERACIONES parentesis_cierra
     '''
-    p[0] = p[1]
+    p[0] = p[2]
 def p_FACTORIZACION_INSTRUCCIONES(p):
     '''
     INSTRUCCIONES_FACTORIZADO : llave_abre INSTRUCCIONES llave_cierra
     '''
-    p[0] = p[1]
+    p[0] = p[2]
 def p_FACTORIZACION_PARAMETROS(p):
     '''
     PARAMETROS_FACTORIZADO : parentesis_abre PARAMETROS parentesis_cierra
     '''
-    p[0] = p[1]
-
-
-
-
-
-
-
-
-#!  28:20
-"""
-def p_EXPRESSIONS(p):
-    '''
-    EXPRESSIONS : EXPRESSIONS E
-    '''
     p[0] = p[2]
 
 
-def p_EXPRESSIONS_VALOR(p):
-    '''
-    EXPRESSIONS : E
-    '''
-    p[0] = p[1]
-
-
-def p_E(p):
-    '''
-    E : E operador_suma E
-      | E operador_resta E
-      | E operador_multiplicacion E
-      | E operador_divicion E
-      | E operador_resto E
-      | id
-      | numero
-    '''
-
-    if len(p) == 2:
+"""    if len(p) == 2:
         p[0] = {"linea": p.lexer.lineno,
                 "columna": getColumn(p.lexer), "valor": p[1]}
     else:
         p[0] = {"linea": p.lexer.lineno, "columna": getColumn(
             p.lexer), "operacion": p[2], "izquierda": p[1], "derecha": p[3]}
 
-    p[0] = "@"
+    p[0] = "@"""
 
 
 
@@ -482,7 +492,7 @@ def p_E(p):
 
 
 
-"""
+
 
 
 def p_error(p):
@@ -497,9 +507,7 @@ parser = yacc()
 # lexer.lex(reflags=re.IGNORECASE)  # case insensitive
 
 INPUT = r'''
-if (5*5) {int a = "s";} else {int a = 55 ;}
-
-if (1*1) {int a = 1;} else {int a = 1;}
+if (5%5-5+5) {int a = 55 ;} else {int a = 55 ;}
 '''
 
 ast = parser.parse(INPUT, lexer)
@@ -510,36 +518,14 @@ print(json.dumps(ast, indent=10, sort_keys=False))
 """while (5*5) {int a = 55 ;}
 do {int a = 55 ;} while (5*5) ;
 void a (int a) {string a = "55";}
-void a (int a) {int a = 55;}"""
+void a (int a) {int a = 55;}
+if (5*5) {} else {int a = 55 ;}
+
+if (1*1) {int a = 1;} else {int a = 1;}
+"""
 
 
 #! ARBOL SINTACTICO
-def graficar(self):
-    inicio = """digraph html {"""
-    final ="""}"""
- 
-    medio = self.pedidos.imprimir()
-
-    documento = inicio + medio + final
-    g = Source(documento, filename="gola" +'_copia.gv',format="png")
-    g.view()
-
-def imprimir(self):
-    puntero= self.end
-    dato_pizza=""
-    while puntero != None:
-        print(puntero.dato)
-            
-        dato_pizza= dato_pizza + "Q"+str(id(puntero.dato))+"[label=\""+puntero.dato.string()+"\"]\n"
-        if puntero.anterior != None:
-            dato_pizza=dato_pizza+"Q"+str(id(puntero.dato)) +"->"+"Q"+str(id(puntero.anterior.dato))+"\n"
-
-        puntero = puntero.anterior
-
-    return dato_pizza
-
-
-
 
 
 
