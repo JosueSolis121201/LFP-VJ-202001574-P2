@@ -9,7 +9,8 @@ def getColumn(t):
     line_start = INPUT.rfind('\n', 0, t.lexpos) + 1
     return (t.lexpos-line_start)+1
     
-def graficar(string):
+def graficar(string,extra):
+    print(extra)
     inicio = 'digraph html {'
     final ='}'
     medio = ""
@@ -17,16 +18,15 @@ def graficar(string):
     numero=0
     id_final=""
     for data in string:
+
         medio=medio + data
         for letra in zip(range(14), data):
             id=id +letra[1]
         if string[numero] != None:
-            id=id +"->"
-        
+            id=id+str(extra) +"->"
         numero=numero+1
     for mega_data in zip(range(len(id)-2),id):
             id_final=id_final +mega_data[1]
-    print(id_final)
         
 
     documento = inicio + medio+id_final + final
@@ -39,35 +39,21 @@ def label(a):
     x=0
     for hoja in a :
         if type(hoja) == list:
-            y=0
-            for sub_hoja_1 in hoja:
-                if type(sub_hoja_1) == list:
-                    b=0
-                    for sub_hoja_2 in sub_hoja_1:
-                        if type(sub_hoja_2) == list:
-                            c=0
-                            for sub_hoja_3 in sub_hoja_2:
-                                if type(sub_hoja_3) == list:
-                                    d=0
-                                    for sub_hoja_4 in sub_hoja_3:
-                                        if type(sub_hoja_1) == list:
-                                            patear=0
-                                        else:
-                                            label_arbol.append("Q"+str(id(a[c]))+"[label=\""+str(sub_hoja_4)+"\"]\n")
-                                        d=d+1
-                                else:
-                                    label_arbol.append("Q"+str(id(a[c]))+"[label=\""+str(sub_hoja_3)+"\"]\n")
-                                c=c+1
-                        else:
-                            label_arbol.append("Q"+str(id(a[b]))+"[label=\""+str(sub_hoja_2)+"\"]\n")
-                        b=b+1
-                else:
-                    label_arbol.append("Q"+str(id(a[y]))+"[label=\""+str(sub_hoja_1)+"\"]\n")
-                y=y+1
+            hijo(hoja,label_arbol)
         else:
             label_arbol.append("Q"+str(id(a[x]))+"[label=\""+str(hoja)+"\"]\n")
-        x=x+1
+            x=x+1
     return label_arbol
+
+def hijo(lista,otra_lista):
+    x=0
+    for hoja in lista :
+        if type(hoja) == list:
+            hijo(hoja,otra_lista)
+        else:
+            otra_lista.append("Q"+str(id(lista[x]))+"[label=\""+str(hoja)+"\"]\n")
+            x=x+1
+    return otra_lista
 
 
 # Tokens
@@ -255,6 +241,7 @@ precedence = (
 
 # Producciones
 
+
 def p_S0(p):
     '''
       S0 : INITIAL
@@ -284,8 +271,12 @@ def p_ESTRUCTURA(p):
                  
     '''
     p[0] = p[1]
+    #print( p[0])
     label_string =label(p[0])
-    graficar(label_string)
+    label_string = label_string + label_string
+    graficar(label_string,extra)
+    extra=extra+1
+    
 
 def p_ESTRUCTURA_PRODDO_WHILE(p):
     '''
@@ -352,7 +343,8 @@ def p_OPERACION(p):
     for s in p:
         if s != None:
             if s == "+" or s == "*"  or s == "-" or s == "/" or s == "%" or s == "==" or s == "!="  or s == ">" or s == ">=" or s == "<" or s == "<=" or s == "&&" or s == "||" or s == "!" or s == "=":
-                p[0].append(p[2]) 
+                p[0].append(p[2])
+                print(p[0]) 
                 
 def p_INSTRUCCIONES(p):
     '''
@@ -508,6 +500,7 @@ parser = yacc()
 
 INPUT = r'''
 if (5%5-5+5) {int a = 55 ;} else {int a = 55 ;}
+if (5*5+5<5) {int a = 55 ;} else {string a = 55 ;}
 '''
 
 ast = parser.parse(INPUT, lexer)
