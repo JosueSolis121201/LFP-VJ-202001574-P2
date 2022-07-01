@@ -20,7 +20,6 @@ class nodo:
         concatenar = ""
         
         for hijo in self.hijos:
-            print(hijo)
             if( type(hijo)!= nodo):
                 concatenar = concatenar +  "q"+str(id(hijo))+"[label=\""+str(hijo)+"\"]\n"
             else:
@@ -239,7 +238,7 @@ def t_newline(t):
 
 
 def t_error(t):
-    print(t.lineno, getColumn(t),
+    (t.lineno, getColumn(t),
           f"No se pudo reconocer el lexema '{t.value}'")
     t.lexer.skip(1)
 
@@ -298,6 +297,10 @@ def p_ESTRUCTURA(p):
                | PRODFUNCION
                | DECLARACION
                | LLAMADA
+               | ASINGACION
+               | RETURN
+               | BREAK
+               | CONTINUE
                  
     '''
     p[0] = nodo("ESTRUCTURA") 
@@ -590,7 +593,7 @@ def p_FACTORIZACION_OPERACION(p):
     '''
     OPERACION_FACTORIZADO : parentesis_abre OPERACIONES parentesis_cierra
     '''
-    p[0] = nodo("OPERACION_FACTORIZADO") 
+    p[0] = nodo("OPERACIONES") 
     p[0].agregar_hijo(p[1])
     p[0].agregar_hijo(p[2])
     p[0].agregar_hijo(p[3])
@@ -598,7 +601,7 @@ def p_FACTORIZACION_INSTRUCCIONES(p):
     '''
     INSTRUCCIONES_FACTORIZADO : llave_abre INSTRUCCIONES llave_cierra
     '''
-    p[0] = nodo("INSTRUCCIONES_FACTORIZADO") 
+    p[0] = nodo("INSTRUCCIONES") 
     p[0].agregar_hijo(p[1])
     p[0].agregar_hijo(p[2])
     p[0].agregar_hijo(p[3])
@@ -606,7 +609,7 @@ def p_FACTORIZACION_PARAMETROS(p):
     '''
     PARAMETROS_FACTORIZADO : parentesis_abre PARAMETROS parentesis_cierra
     '''
-    p[0] = nodo("PARAMETROS_FACTORIZADO") 
+    p[0] = nodo("PARAMETROS") 
     p[0].agregar_hijo(p[1])
     p[0].agregar_hijo(p[2])
     p[0].agregar_hijo(p[3])
