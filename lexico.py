@@ -1,15 +1,45 @@
+from numpy import flexible
 from ply.yacc import yacc
 import json
 from ply.lex import lex
 from reporte_tokens import clase_token
 from graphviz import Source
 
+class nodo:
+
+    def __init__(self,nombre ):
+        self.hijos = []
+        self.nombre = nombre
+
+    def agregar_hijo(self,hijo):
+        self.hijos.append(hijo)
+
+
+    def graficar(self):
+        concatenar = ""
+        
+        for hijo in self.hijos:
+            print(hijo)
+            if( type(hijo)!= nodo):
+                concatenar = concatenar +  "q"+str(id(hijo))+"[label=\""+str(hijo)+"\"]\n"
+            else:
+                concatenar = concatenar + hijo.graficar()
+            flecha = "q"+str(id(self ))+" -> "+ "q"+str(id(hijo)) + "\n"
+            concatenar = concatenar + flecha 
+
+        valor_propio = "q"+str(id(self))+"[label=\""+str(self.nombre)+"\"]\n"
+
+        concatenar = concatenar + valor_propio
+        return concatenar
+
+        
+
 
 def getColumn(t):
     line_start = INPUT.rfind('\n', 0, t.lexpos) + 1
     return (t.lexpos-line_start)+1
     
-def graficar(string,extra):
+def graficar444(string,extra,raiz):
     print(extra)
     inicio = 'digraph html {'
     final ='}'
@@ -29,7 +59,7 @@ def graficar(string,extra):
             id_final=id_final +mega_data[1]
         
 
-    documento = inicio + medio+id_final + final
+    documento = inicio + raiz.graficar()  + final
     #input("introdusca el nombre del reporte HTML :")
     g = Source(documento, filename="gola",format="pdf")
     g.view()
@@ -246,18 +276,29 @@ def p_S0(p):
     '''
       S0 : INITIAL
     '''
+    p[0] = nodo("S0")
+    p[0].agregar_hijo(p[1])
+
+    print(p[0].graficar())
+
     #print(p[1])
 def p_INITIAL_RECURSIVO(p):
     '''
     INITIAL : INITIAL ESTRUCTURA
     '''
-    p[1].append(p[2]) 
-    p[0] = p[1]
+    p[0] = nodo("INITIAL") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    
+
+
+
 def p_INITIAL_INICIAL(p):
     '''
     INITIAL : ESTRUCTURA
     '''
-    p[0] = [p[1]]
+    p[0] = nodo("INITIAL") 
+    p[0].agregar_hijo(p[1])
 
 def p_ESTRUCTURA(p):
     '''
@@ -268,59 +309,90 @@ def p_ESTRUCTURA(p):
                | PRODVOID
                | PRODFUNCION
                | DECLARACION
+               | LLAMADA
                  
     '''
-    p[0] = p[1]
-    #print( p[0])
-    label_string =label(p[0])
-    label_string = label_string + label_string
-    graficar(label_string,extra)
-    extra=extra+1
+    p[0] = nodo("ESTRUCTURA") 
+    p[0].agregar_hijo(p[1])
     
 
 def p_ESTRUCTURA_PRODDO_WHILE(p):
     '''
     PRODDO_WHILE : reservada_do INSTRUCCIONES_FACTORIZADO reservada_while OPERACION_FACTORIZADO punto_coma
     '''
-    p[0] = p[1]
+    p[0] = nodo("PRODDO_WHILE") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    p[0].agregar_hijo(p[4])
+    p[0].agregar_hijo(p[5])
+
 def p_ESTRUCTURA_PRODWHILE(p):
     '''
     PRODWHILE : reservada_while OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO 
     '''
-    p[0] = p[1]
+    p[0] = nodo("PRODWHILE") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    
 def p_ESTRUCTURA_IF_ELSE(p):
     '''
     PRODIF_ELSE : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO reservada_else INSTRUCCIONES_FACTORIZADO
     '''
-    p[0] = [p[1]]
-    p[0].append(p[2])
-    p[0].append(p[3])
-    p[0].append(p[4])
-    p[0].append(p[5]) 
+   
+    p[0] = nodo("PRODIF_ELSE") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    p[0].agregar_hijo(p[4])
+    p[0].agregar_hijo(p[5])
     
 def p_ESTRUCTURA_IF(p):
     '''
     PRODIF : reservada_if OPERACION_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     '''
-    p[0] = p[1]
+    p[0] = nodo("PRODIF") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+   
 def p_ESTRUCTURA_VOID(p):
     '''
     PRODVOID : reservada_void id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     '''
-    p[0] = p[1]
+    p[0] = nodo("PRODVOID") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    p[0].agregar_hijo(p[4])
+
 def p_ESTRUCTURA_FUNCION(p):
     '''
     PRODFUNCION : TIPO_DATO id PARAMETROS_FACTORIZADO INSTRUCCIONES_FACTORIZADO
     '''
-    p[0] = p[1]
+    p[0] = nodo("PRODFUNCION") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    p[0].agregar_hijo(p[4])
 
 def p_OPERACIONES(p):
     '''
     OPERACIONES : OPERACIONES OPERACION
-                | OPERACION
     '''
-    p[0] = p[1]
-def p_OPERACION(p):
+    p[0] = nodo("OPERACIONES") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])  
+
+def p_OPERACIONES_AUX(p):
+    '''
+     OPERACIONES : OPERACION 
+    '''
+    p[0] = nodo("OPERACIONES") 
+    p[0].agregar_hijo(p[1])
+    
+def p_OPERACION_TRES(p):
     '''
     OPERACION : OPERACION operador_suma OPERACION
             |   OPERACION operador_resta OPERACION
@@ -337,15 +409,21 @@ def p_OPERACION(p):
             |   OPERACION operador_OR OPERACION
             |   OPERACION operador_NOT OPERACION
             |   OPERACION operador_igual OPERACION
-            |   numero
     '''
-    p[0]=[p[1]]
-    for s in p:
-        if s != None:
-            if s == "+" or s == "*"  or s == "-" or s == "/" or s == "%" or s == "==" or s == "!="  or s == ">" or s == ">=" or s == "<" or s == "<=" or s == "&&" or s == "||" or s == "!" or s == "=":
-                p[0].append(p[2])
-                print(p[0]) 
-                
+    p[0] = nodo("OPERACION") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2]) 
+    p[0].agregar_hijo(p[3])
+
+def p_OPERACION_UNO(p):           
+    '''
+        OPERACION : numero
+    '''
+
+    p[0] = nodo("OPERACION") 
+    p[0].agregar_hijo(p[1])
+
+    
 def p_INSTRUCCIONES(p):
     '''
     INSTRUCCIONES : DECLARACION
@@ -361,88 +439,156 @@ def p_INSTRUCCIONES(p):
                   | LLAMADA
                   
     '''
-    p[0] = p[1]
-#! AGREGAR TODO (FALTA)
+    p[0] = nodo("INSTRUCCIONES") 
+    p[0].agregar_hijo(p[1])
+
 def p_DECLARACIONES(p):
     '''
     DECLARACION : TIPO_DATO id operador_igual DATO punto_coma
     '''
-    p[0] = (p[1])
+    p[0] = nodo("DECLARACION") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    p[0].agregar_hijo(p[4])
+    p[0].agregar_hijo(p[5])
     
 
 def p_ASIGNACION(p):
     '''
     ASINGACION : id operador_igual DATO punto_coma
     '''
-    p[0] = p[3]
-def p_TIPO_DATO(p):
-  '''
-  TIPO_DATO : tipo_int 
-            | tipo_double
-            | tipo_string
-            | tipo_char
-            | tipo_boolean
-  
-  '''
-  
-  p[0] = p[1]
-def p_DATO(p):
-  '''
-  DATO : numero 
-          | dato_double
-          | dato_string
-          | dato_char
-          | dato_boolean_true
-          | dato_boolean_false
-  '''
+    p[0] = nodo("ASINGACION") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    p[0].agregar_hijo(p[4])
 
-  p[0] = p[1]
+def p_TIPO_DATO(p):
+    '''
+    TIPO_DATO : tipo_int 
+                | tipo_double
+                | tipo_string
+                | tipo_char
+                | tipo_boolean
+    
+    '''
+    p[0] = nodo("TIPO_DATO") 
+    p[0].agregar_hijo(p[1])
+def p_DATO(p):
+    '''
+    DATO : numero 
+            | dato_double
+            | dato_string
+            | dato_char
+            | dato_boolean_true
+            | dato_boolean_false
+    '''
+
+    p[0] = nodo("DATO") 
+    p[0].agregar_hijo(p[1])
 def p_PARAMETRO_DEFINICION(p):
     '''
     PARAMETRO : TIPO_DATO id
     '''
-    p[0] = p[1]
+    p[0] = nodo("PARAMETRO") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
 def p_PARAMETROS_RECURSIVO(p):
     '''
     PARAMETROS :  PARAMETROS coma PARAMETRO 
-               | PARAMETRO
-               | 
     '''
-    p[0] = p[1]
+    p[0] = nodo("PARAMETRO") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+
+def p_PARAMETROS_RECURSIVO_AUX_1(p): 
+    '''
+    PARAMETROS :  PARAMETRO 
+    '''
+    p[0] = nodo("PARAMETROS") 
+    p[0].agregar_hijo(p[1])
+
+def p_PARAMETROS_RECURSIVO_AUX_2(p): 
+    '''
+    PARAMETROS :   
+    '''
+    p[0] = nodo("epsilon") 
+
+
 def p_LLAMADA(p):
     '''
     LLAMADA : id parentesis_abre ARGUMENTOS parentesis_cierra
     '''
-    p[0] = p[2]
-def p_ARGUMENTOS(p):
+    p[0] = nodo("LLAMADA") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+    p[0].agregar_hijo(p[4]) 
+
+def p_ARGUMENTOS(p):    #!##########################################################################
     '''
     ARGUMENTOS :  ARGUMENTOS coma ARGUMENTO 
-               | ARGUMENTO
-               | 
     '''
-    p[0] = p[1]
+    p[0] = nodo("ARGUMENTOS") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+
+def p_ARGUMENTOS_AUX_1(p):
+    '''
+    ARGUMENTOS :  ARGUMENTO
+    ''' 
+    p[0] = nodo("ARGUMENTOS") 
+    p[0].agregar_hijo(p[1])
+
+def p_ARGUMENTOS_AUX_2(p): 
+    '''
+    ARGUMENTOS :  
+    ''' 
+    p[0] = nodo("epsilon") 
+
 def p_ARGUMENTO(p):
     ''' 
     ARGUMENTO :  DATO
     '''
-    p[0] = p[1]
+    p[0] = nodo("ARGUMENTO") 
+    p[0].agregar_hijo(p[1])
 
 def p_RETURN(p):
     '''
     RETURN : reservada_return punto_coma 
-           | reservada_return DATO punto_coma 
     '''
-    p[0] = p[1]
+    p[0] = nodo("RETURN") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+
+def p_RETURN_AUX(p):
+    '''
+    RETURN : reservada_return DATO punto_coma 
+    '''
+    p[0] = nodo("RETURN") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
+
+
+
 def p_BREAK(p):
     '''
     BREAK : reservada_break punto_coma 
     '''
-    p[0] = p[1]
+    p[0] = nodo("BREAK") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
 def p_CONTINUE(p):
     '''
     CONTINUE : reservada_continue punto_coma 
     '''
-    p[0] = p[1]
+    p[0] = nodo("CONTINUE") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
 
 
 
@@ -456,34 +602,26 @@ def p_FACTORIZACION_OPERACION(p):
     '''
     OPERACION_FACTORIZADO : parentesis_abre OPERACIONES parentesis_cierra
     '''
-    p[0] = p[2]
+    p[0] = nodo("OPERACION_FACTORIZADO") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
 def p_FACTORIZACION_INSTRUCCIONES(p):
     '''
     INSTRUCCIONES_FACTORIZADO : llave_abre INSTRUCCIONES llave_cierra
     '''
-    p[0] = p[2]
+    p[0] = nodo("INSTRUCCIONES_FACTORIZADO") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
 def p_FACTORIZACION_PARAMETROS(p):
     '''
     PARAMETROS_FACTORIZADO : parentesis_abre PARAMETROS parentesis_cierra
     '''
-    p[0] = p[2]
-
-
-"""    if len(p) == 2:
-        p[0] = {"linea": p.lexer.lineno,
-                "columna": getColumn(p.lexer), "valor": p[1]}
-    else:
-        p[0] = {"linea": p.lexer.lineno, "columna": getColumn(
-            p.lexer), "operacion": p[2], "izquierda": p[1], "derecha": p[3]}
-
-    p[0] = "@"""
-
-
-
-
-
-
-
+    p[0] = nodo("PARAMETROS_FACTORIZADO") 
+    p[0].agregar_hijo(p[1])
+    p[0].agregar_hijo(p[2])
+    p[0].agregar_hijo(p[3])
 
 
 
@@ -500,12 +638,11 @@ parser = yacc()
 
 INPUT = r'''
 if (5%5-5+5) {int a = 55 ;} else {int a = 55 ;}
-if (5*5+5<5) {int a = 55 ;} else {string a = 55 ;}
 '''
 
 ast = parser.parse(INPUT, lexer)
 
-print(json.dumps(ast, indent=10, sort_keys=False))
+#print(json.dumps(ast, indent=10, sort_keys=False))
 
 
 """while (5*5) {int a = 55 ;}
