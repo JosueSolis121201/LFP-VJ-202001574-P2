@@ -1,3 +1,4 @@
+import graphviz
 from numpy import flexible
 from ply.yacc import yacc
 import json
@@ -39,29 +40,14 @@ def getColumn(t):
     line_start = INPUT.rfind('\n', 0, t.lexpos) + 1
     return (t.lexpos-line_start)+1
     
-def graficar444(string,extra,raiz):
-    print(extra)
+def digraph(string):
+    
     inicio = 'digraph html {'
     final ='}'
-    medio = ""
-    id=""
-    numero=0
-    id_final=""
-    for data in string:
 
-        medio=medio + data
-        for letra in zip(range(14), data):
-            id=id +letra[1]
-        if string[numero] != None:
-            id=id+str(extra) +"->"
-        numero=numero+1
-    for mega_data in zip(range(len(id)-2),id):
-            id_final=id_final +mega_data[1]
-        
-
-    documento = inicio + raiz.graficar()  + final
+    documento = inicio + string  + final
     #input("introdusca el nombre del reporte HTML :")
-    g = Source(documento, filename="gola",format="pdf")
+    g = Source(documento, filename=input("introdusca el nombre del arbol sintactico : "),format="pdf")
     g.view()
 
 def label(a):
@@ -279,7 +265,9 @@ def p_S0(p):
     p[0] = nodo("S0")
     p[0].agregar_hijo(p[1])
 
-    print(p[0].graficar())
+    string=p[0].graficar()
+    digraph(string)
+    
 
     #print(p[1])
 def p_INITIAL_RECURSIVO(p):
@@ -636,23 +624,17 @@ lexer = lex()
 parser = yacc()
 # lexer.lex(reflags=re.IGNORECASE)  # case insensitive
 
-INPUT = r'''
-if (5%5-5+5) {int a = 55 ;} else {int a = 55 ;}
-'''
+
+with open(input("introdusca el nombre del archivo :")+".sc") as f:
+            print("archivo.sc aceptado ")
+            msg = f.read()
+INPUT = msg
 
 ast = parser.parse(INPUT, lexer)
 
 #print(json.dumps(ast, indent=10, sort_keys=False))
 
 
-"""while (5*5) {int a = 55 ;}
-do {int a = 55 ;} while (5*5) ;
-void a (int a) {string a = "55";}
-void a (int a) {int a = 55;}
-if (5*5) {} else {int a = 55 ;}
-
-if (1*1) {int a = 1;} else {int a = 1;}
-"""
 
 
 #! ARBOL SINTACTICO
@@ -690,8 +672,7 @@ for element in lista_tokens:
     concatenar = concatenar + element.html()
 cuerpo_token="<h1>REPORTE DE TOKENS</h1>"+ cuerpo +concatenar+ "</tbody></table>"
 final = inicio +cuerpo_token+"</html></body>"
-#input("introdusca el nombre del reporte HTML :")
-f = open ("si"+".html",'w')
+f = open (input("introdusca el nombre del reporte HTML :")+".html",'w')
 f.write(final)
 f.close()
 
